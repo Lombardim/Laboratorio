@@ -1,0 +1,13 @@
+Solomillo de Cerdo Hojaldrado, 1, 40000.0
+Coca Cola, 1, 2000.0
+Minitarta Selva Negra, 1, 16200.0
+Solomillo de Cerdo Hojaldrado, 1, 40000.0
+Coca Cola, 1, 2000.0
+Tiramisú Crujiente, 1, 11800.0
+Papada de Cerdo, 1, 37000.0
+Coca Cola, 1, 2000.0
+Jugos Naturales, 1, 1800.0
+Kati Roll, 1, 30700.0
+Coca Cola, 1, 2000.0
+Exótico, 1, 9700.0
+Coca Cola, 1, 2000.0

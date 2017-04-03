@@ -4,7 +4,7 @@ public class Restaurante_La_Prosperidad_Camilo_Miguel {
 
     public static void main(String[] args) {
         
-        new Registro_Meseros().setVisible(true);
+        Registro_Meseros registro = new Registro_Meseros();
         
     }
    

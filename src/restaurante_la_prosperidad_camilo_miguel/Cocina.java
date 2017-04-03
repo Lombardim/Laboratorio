@@ -1,16 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package restaurante_la_prosperidad_camilo_miguel;
 
 import java.io.*;
 import java.util.logging.*;
 import javax.swing.table.DefaultTableModel;
-
-
- 
 
 public class Cocina extends javax.swing.JFrame {
 
@@ -27,7 +19,7 @@ public class Cocina extends javax.swing.JFrame {
         initComponents();
     }
     
-    File archivo = new File("C:\\Users\\Camilo D\\Documents\\Restaurante_La_Prosperidad_Camilo_Miguel\\src\\Archivos\\Pedidos.txt");
+    File archivo;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -38,7 +30,6 @@ public class Cocina extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        bda = new javax.swing.JFileChooser();
         Comanda = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         Ped = new javax.swing.JTable();
@@ -47,8 +38,6 @@ public class Cocina extends javax.swing.JFrame {
         ACTUALIZAR = new javax.swing.JButton();
         pedidoMesa = new javax.swing.JLabel();
         meseroCargo = new javax.swing.JLabel();
-
-        bda.setBackground(java.awt.Color.white);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Pedidos");
@@ -82,7 +71,7 @@ public class Cocina extends javax.swing.JFrame {
 
         jSplitPane1.setFocusable(false);
 
-        jButton1.setText("GUARDAR");
+        jButton1.setText("COCINAR");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -105,7 +94,7 @@ public class Cocina extends javax.swing.JFrame {
             .addGroup(ComandaLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jSplitPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(67, Short.MAX_VALUE))
+                .addContainerGap(69, Short.MAX_VALUE))
             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
         ComandaLayout.setVerticalGroup(
@@ -140,7 +129,7 @@ public class Cocina extends javax.swing.JFrame {
                 .addComponent(pedidoMesa)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(meseroCargo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
                 .addComponent(Comanda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -156,6 +145,7 @@ public class Cocina extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) Ped.getModel();
         model.setRowCount(conta);
         model.setColumnCount(3);
+        modificarArchivo(MesaN);
         if (this.plato1.equals("Kati Roll")) {
             Ped.setValueAt(this.plato1, pos, 0);
             Ped.setValueAt(this.cantpl1, pos, 1);
@@ -256,14 +246,36 @@ public class Cocina extends javax.swing.JFrame {
     }
     
     private void ACTUALIZARActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ACTUALIZARActionPerformed
-        generarMatriz();
         pedidoMesa.setText("Pedido de la mesa #: " + MesaN + ".");
         meseroCargo.setText("Mesero a cargo: " + nombreM + ".");
+        archivo = new File("C:\\Users\\Personal\\Documents\\NetBeansProjects\\Restaurante_La_Prosperidad_Camilo_Miguel\\src\\archivos\\Pedido" + MesaN + ".txt");
+        generarMatriz();
     }//GEN-LAST:event_ACTUALIZARActionPerformed
-
+    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        TiempoCoccion tc = new TiempoCoccion();
+        tc.NomMesero = nombreM;
+        tc.NumMesa = MesaN;
+        tc.Minutos = 1 + ((int)(Math.random() * 8));
+        tc.Segundos = 1 + ((int)(Math.random() * 59));
+        tc.archivo = archivo;
+        System.out.println("Tiempo estimado de preparación = " + tc.Minutos + ":" + tc.Segundos);
+        tc.setLocationRelativeTo(null);
+        tc.setVisible(true);
+        this.dispose();
+        tc.crono.start();
     }//GEN-LAST:event_jButton1ActionPerformed
+    
+    public void modificarArchivo(int mesa){
+        try(FileWriter fw = new FileWriter(archivo, true)){
+            Object mesaA = mesa;
+            fw.write("Pedido de la mesa #" + mesaA + ":" + "\r\n");
+        }catch(NullPointerException ex){
+            
+        }catch(IOException e){
+            Logger.getLogger(Cocina.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
     
     public void modificarArchivo(String plato, int cantidad, float precio){
         
@@ -272,7 +284,7 @@ public class Cocina extends javax.swing.JFrame {
             Object CA = cantidad;
             Object PR = precio;
             bw.write( PL + ", " + CA + ", " + PR + "\r" + "\n" );
-        }catch(NullPointerException ex){
+        }catch(NullPointerException e){
         
         } catch (IOException ex) {
             Logger.getLogger(Cocina.class.getName()).log(Level.SEVERE, null, ex);
@@ -320,7 +332,6 @@ public class Cocina extends javax.swing.JFrame {
     private javax.swing.JButton ACTUALIZAR;
     private javax.swing.JPanel Comanda;
     public javax.swing.JTable Ped;
-    private javax.swing.JFileChooser bda;
     private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSplitPane jSplitPane1;

@@ -33,9 +33,6 @@ public class Menú extends javax.swing.JFrame {
         PRECIODPL = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         TEXTODEMOPL = new javax.swing.JTextArea();
-        contador = new javax.swing.JFrame();
-        jPanel1 = new javax.swing.JPanel();
-        tempo = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         PKR = new javax.swing.JRadioButton();
         PPDC = new javax.swing.JRadioButton();
@@ -91,7 +88,6 @@ public class Menú extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
-        facButton = new javax.swing.JButton();
         PAP = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
 
@@ -206,44 +202,6 @@ public class Menú extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        contador.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        contador.setFocusableWindowState(false);
-        contador.setResizable(false);
-
-        tempo.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
-        tempo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        tempo.setText("00:00:00");
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(tempo, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(tempo, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(20, Short.MAX_VALUE))
-        );
-
-        javax.swing.GroupLayout contadorLayout = new javax.swing.GroupLayout(contador.getContentPane());
-        contador.getContentPane().setLayout(contadorLayout);
-        contadorLayout.setHorizontalGroup(
-            contadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contadorLayout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        contadorLayout.setVerticalGroup(
-            contadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         setTitle("MENÚ");
@@ -659,13 +617,13 @@ public class Menú extends javax.swing.JFrame {
             }
         });
         getContentPane().add(PedidoButton);
-        PedidoButton.setBounds(370, 320, 140, 23);
+        PedidoButton.setBounds(350, 320, 140, 23);
 
         jLabel4.setBackground(new java.awt.Color(255, 255, 255));
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel4.setText("Precio a pagar:");
         getContentPane().add(jLabel4);
-        jLabel4.setBounds(140, 320, 90, 20);
+        jLabel4.setBounds(120, 320, 90, 20);
 
         jButton2.setText("CALCULAR");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -674,28 +632,18 @@ public class Menú extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jButton2);
-        jButton2.setBounds(10, 320, 100, 23);
+        jButton2.setBounds(510, 320, 100, 23);
 
         jLabel12.setBackground(new java.awt.Color(0, 0, 0));
         jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Fotos/menu4.jpg"))); // NOI18N
         getContentPane().add(jLabel12);
         jLabel12.setBounds(10, 10, 170, 170);
 
-        facButton.setText("FACTURA");
-        facButton.setEnabled(false);
-        facButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                facButtonActionPerformed(evt);
-            }
-        });
-        getContentPane().add(facButton);
-        facButton.setBounds(520, 320, 90, 23);
-
         PAP.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         PAP.setText("00.000,00$");
         PAP.setEnabled(false);
         getContentPane().add(PAP);
-        PAP.setBounds(230, 320, 120, 23);
+        PAP.setBounds(210, 320, 120, 23);
 
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Fotos/gruener-hintergrund.jpg"))); // NOI18N
         getContentPane().add(jLabel9);
@@ -854,7 +802,7 @@ public class Menú extends javax.swing.JFrame {
             this.cont=this.cont+1;
         }
         if (PPDC.isSelected()==true) {
-            pedido.plato2= PPDC.getText();
+            pedido.plato2 = PPDC.getText();
             pedido.cantpl2= (int) PC2.getValue();
             pedido.preciopl2 = 37000;
             this.cont=this.cont+1;
@@ -922,8 +870,10 @@ public class Menú extends javax.swing.JFrame {
         pedido.cont = this.cont;
         pedido.MesaN = idMesa;
         pedido.nombreM = nombreMesero;
+        this.dispose();
         pedido.setVisible(true);
         pedido.setLocationRelativeTo(null);
+        
     }//GEN-LAST:event_PedidoButtonActionPerformed
 
     private void PSAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PSAActionPerformed
@@ -1014,10 +964,6 @@ public class Menú extends javax.swing.JFrame {
           MSNC.setEnabled(false);
         }
     }//GEN-LAST:event_MSNNActionPerformed
-
-    private void facButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_facButtonActionPerformed
-      // TODO add your handling code here:
-    }//GEN-LAST:event_facButtonActionPerformed
     //se crea una jframe interno en el cuan contiene la factura con los pedidos que realizo y un joption para mostrar que ya pago.
     /**
      * @param args the command line arguments
@@ -1111,8 +1057,6 @@ public class Menú extends javax.swing.JFrame {
     private javax.swing.JLabel TCP;
     private javax.swing.JTextArea TEXTODEMO;
     private javax.swing.JTextArea TEXTODEMOPL;
-    private javax.swing.JFrame contador;
-    private javax.swing.JButton facButton;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -1122,13 +1066,11 @@ public class Menú extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JLabel tempo;
     // End of variables declaration//GEN-END:variables
 }
 //</editor-fold>

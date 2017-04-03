@@ -1,24 +1,160 @@
-
 package restaurante_la_prosperidad_camilo_miguel;
 
+import java.io.*;
+import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import static javax.swing.JOptionPane.*;
 
 
-public class Registro_Meseros extends javax.swing.JFrame {
-    Menú menu = new Menú();
-    Mesero ptrMesero;
-    int mc = 0, cont = 1;
-    Mesero pMesero, qMesero;
+public class Registro_Meseros extends javax.swing.JFrame {    
+    boolean sw = true;
+    Mesero ptrMesero, pMesero, qMesero;
+    int mc = 0, cont = 1, nape = 1, ncc = 1; 
     Mesa pMesa;
+    File archivoN;
+    String URLarchivo = "C:\\Users\\Personal\\Documents\\NetBeansProjects\\Restaurante_La_Prosperidad_Camilo_Miguel\\src\\archivos\\Meseros.txt";
     
-    public Registro_Meseros() {
-        initComponents();
-        ptrMesero = null;
+    //<editor-fold defaultstate="collapsed" desc="Manejo de archivos">
+    /**
+     * Subrutina para modificar el archivo {Meseros} creado, con dos parámetros que son los que utiliza para escribir en el archivo.
+     * @param nombre Recibe una variable de tipo String para escribir el nombre del mesero a generar.
+     * @param cedula Variable de tipo entero que tiene el número con el que se identifica al mesero creado.
+     * @since Segunda Entrega.
+     */
+    public void modificarArchivo(String nombre, int cedula){
+        Object Cedula = cedula;
+        Object Nombre = nombre;
+        try(FileWriter bw = new FileWriter(archivoN, true)){
+            if(nombre.equals("Nombre_Apellido, Número de cédula.")){
+                bw.write("Nombre_Apellido, Número de cédula." + "\r\n");
+            }else{
+                bw.write("Mesero #"+ (mc+1) + "\r\n" + Nombre + ", " + Cedula + "\r\n" + "A cargo de las mesas: " + "\r\n");
+                for (int i = 0; i < 5; i++) {
+                    bw.write("\tMesa #" + (cont+i) + "\r\n");
+                }
+            }
+        }catch(NullPointerException ex){
         
+        } catch (IOException ex) {
+            Logger.getLogger(Cocina.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
+    /**
+     * Subrutina para comprobar si el archivo existe o no, convierte la variable {sw} en falso si existe
+     * y si no existe crea un nuevo archivo y en su primera linea escribe "Nombre_Apellido, Número de cédula".
+     * @since Segunda Entrega.
+     */
+    public void abrirArchivo(){
+        try(FileReader archivop = new FileReader(URLarchivo)){ 
+            sw = false;
+        }catch(FileNotFoundException e){
+            archivoN = new File(URLarchivo);
+            modificarArchivo("Nombre_Apellido, Número de cédula.", 1);
+            } catch (IOException ex) {
+                Logger.getLogger(Cocina.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Subrutina que genera a los meseros automáticamente">
+    /**
+     * Esta subrutina sirve para generar a los meseros automáticamente, abriendo el archivo que se encuentra en la URL
+     * {URLarchivo}, si existe y lo recorre para así sacar los nombres de los 4 meseros ya creados y generarlos
+     * llamando la subrutina {Generar(String nombre, int cedula)}.
+     * @since Segunda Entrega.
+     */
+    public void generarMeserosA(){
+        
+        try(FileReader archivop = new FileReader(URLarchivo)){
+            try(BufferedReader br = new BufferedReader(archivop)) {
+                String linea;
+                boolean swg;
+                while((linea = br.readLine()) != null){
+                    swg = true;
+
+                    if(linea.equals("Nombre_Apellido, Número de cédula.") || linea.equals("A cargo de las mesas: ")){
+                        
+                        swg = false;
+                    }
+                    if(swg == true){
+                        for (int i = 1; i < 5; i++) {
+                            if (linea.equals("Mesero #" + i)) {
+                                swg = false;
+                                break;
+                            }
+                        }
+                    }
+                    if(swg == true){
+                        for (int i = 1; i < 21; i++) {
+                            if(linea.equals("\tMesa #"+ i)){
+                                swg = false;
+                                break;
+                            }
+                        }
+                    }
+                    if(swg == true){
+                        int contTok = 1;
+                        StringTokenizer nc = new StringTokenizer(linea, ",");
+                        String nombre = "", cedulaT, cedulaS;
+                        int cedula = 0;
+                        while(nc.hasMoreTokens()){
+                            if (contTok == 1) {
+                                nombre = nc.nextToken();
+                            }else{
+                                cedulaT = nc.nextToken();
+                                cedulaS = cedulaT.substring(1, cedulaT.length());
+                                cedula = Integer.parseInt(cedulaS);
+                            }
+                            contTok++;
+                        }
+                        Generar(nombre, cedula);
+                        if(mc == 4){
+                            listaMeseros();
+                            listaMesas();
+                        }
+                    }
+
+                }
+            }
+        }catch(FileNotFoundException e){
+            
+            } catch (IOException ex) {
+                Logger.getLogger(Cocina.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Constructor">
+    /**
+     * El constructor de la clase {Registro_Meseros} se encarga de generar todos los componentes que se encuentran en dicha clase
+     * además de comprobar si existe el archivo que contendrá a los meseros. Si al comprobar retorna {sw = false} entonces genera automáticamente
+     * a los meseros y muestra la recepción, si no, entonces mostrará la ventana en donde se crearan los 4 meseros y generara un archivo llamado
+     * {Meseros.txt} que será utilizado para la próxima vez que se corra el algoritmo.
+     */
+    public Registro_Meseros() {
+        abrirArchivo();
+        ptrMesero = null;
+        initComponents();
+        if (sw == false) {
+            generarMeserosA();
+            Recepcion.setVisible(true);
+            Recepcion.setLocationRelativeTo(null);
+        }else{
+            this.setVisible(true);
+        }
+    }
+    //</editor-fold>
+    
     //<editor-fold defaultstate="collapsed" desc="Genera la lista con los meseros y de mesas">
+    /**
+     * Subrutina encargada de actualizar la jList en la ventana {Recepcion} la cual muestra a los
+     * meseros que estan registrados en el sistema del restaurante.
+     * Es posible dar click sobre uno de los meseros y presionar el botón {COMPROBAR} para saber
+     * que mesas tiene a su cargo y comprobar su estado: {Ocupada} o {Disponible}
+     */
     public void listaMeseros(){
         DefaultListModel model = new DefaultListModel();
         pMesero = ptrMesero;
@@ -28,10 +164,13 @@ public class Registro_Meseros extends javax.swing.JFrame {
             pMesero = pMesero.linkMesero;
         }
         
-        listameseros.setModel(model);
+        listaMeseros.setModel(model);
         
     }
-    
+    /**
+     * Subrutina encargada de actualizar la jList en la ventana {Recepcion] la cual muestra todas las mesas
+     * que se encuentran disponibles en el momento, si alguna mesa es reservada desaparecerá de la lista.
+     */
     public void listaMesas(){
         
         DefaultListModel model = new DefaultListModel();
@@ -64,21 +203,21 @@ public class Registro_Meseros extends javax.swing.JFrame {
         Recepcion = new javax.swing.JFrame();
         titulo = new javax.swing.JLabel();
         NOMBRE = new javax.swing.JLabel();
-        NOMBRET = new javax.swing.JTextField();
         APELLIDO = new javax.swing.JLabel();
-        APELLIDOT = new javax.swing.JTextField();
         CEDULA = new javax.swing.JLabel();
-        CEDULAT = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         listaMesas = new javax.swing.JList<>();
         RESERVAR = new javax.swing.JButton();
         hint = new javax.swing.JLabel();
-        listame = new javax.swing.JLabel();
+        listamesas = new javax.swing.JLabel();
         AYUDA = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        listameseros = new javax.swing.JList<>();
-        listames = new javax.swing.JLabel();
+        listaMeseros = new javax.swing.JList<>();
+        listameseros = new javax.swing.JLabel();
         comprobar = new javax.swing.JButton();
+        NOMBRET = new javax.swing.JTextField();
+        APELLIDOT = new javax.swing.JTextField();
+        CEDULAT = new javax.swing.JTextField();
         Gerente = new javax.swing.JFrame();
         BIENVENIDO = new javax.swing.JLabel();
         MENSAJEV = new javax.swing.JLabel();
@@ -111,30 +250,9 @@ public class Registro_Meseros extends javax.swing.JFrame {
 
         NOMBRE.setText("NOMBRE: ");
 
-        NOMBRET.setFocusTraversalPolicyProvider(true);
-        NOMBRET.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                NOMBRETKeyTyped(evt);
-            }
-        });
-
         APELLIDO.setText("APELLIDO: ");
 
-        APELLIDOT.setFocusTraversalPolicyProvider(true);
-        APELLIDOT.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                APELLIDOTKeyTyped(evt);
-            }
-        });
-
         CEDULA.setText("C.C:");
-
-        CEDULAT.setFocusTraversalPolicyProvider(true);
-        CEDULAT.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                CEDULATKeyTyped(evt);
-            }
-        });
 
         jScrollPane1.setViewportView(listaMesas);
 
@@ -149,22 +267,23 @@ public class Registro_Meseros extends javax.swing.JFrame {
         hint.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         hint.setText("Llene los campos y seleccione la mesa donde quiera sentarse.");
 
-        listame.setForeground(new java.awt.Color(0, 204, 102));
-        listame.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        listame.setText("MESAS DISPONIBLES:");
+        listamesas.setForeground(new java.awt.Color(0, 204, 102));
+        listamesas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        listamesas.setText("MESAS DISPONIBLES:");
 
         AYUDA.setText("?");
+        AYUDA.setVisible(false);
         AYUDA.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 AYUDAActionPerformed(evt);
             }
         });
 
-        jScrollPane2.setViewportView(listameseros);
+        jScrollPane2.setViewportView(listaMeseros);
 
-        listames.setForeground(new java.awt.Color(0, 204, 102));
-        listames.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        listames.setText("MESEROS:");
+        listameseros.setForeground(new java.awt.Color(0, 204, 102));
+        listameseros.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        listameseros.setText("MESEROS:");
 
         comprobar.setText("COMPROBAR");
         comprobar.addActionListener(new java.awt.event.ActionListener() {
@@ -192,9 +311,9 @@ public class Registro_Meseros extends javax.swing.JFrame {
                                             .addComponent(APELLIDO, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                             .addComponent(CEDULA, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addGroup(RecepcionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(APELLIDOT, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
+                                        .addGroup(RecepcionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(NOMBRET)
+                                            .addComponent(APELLIDOT)
                                             .addComponent(CEDULAT))))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(AYUDA, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -202,7 +321,7 @@ public class Registro_Meseros extends javax.swing.JFrame {
                         .addContainerGap())
                     .addGroup(RecepcionLayout.createSequentialGroup()
                         .addGroup(RecepcionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(listame, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                            .addComponent(listamesas, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                         .addGroup(RecepcionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(RecepcionLayout.createSequentialGroup()
@@ -210,7 +329,7 @@ public class Registro_Meseros extends javax.swing.JFrame {
                                 .addComponent(RESERVAR)
                                 .addGap(18, 18, 18)
                                 .addGroup(RecepcionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(listames, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
+                                    .addComponent(listameseros, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
                                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, RecepcionLayout.createSequentialGroup()
@@ -226,14 +345,14 @@ public class Registro_Meseros extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(hint)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(RecepcionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(RecepcionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(NOMBRE)
                     .addComponent(NOMBRET, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(RecepcionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(APELLIDO)
-                    .addComponent(APELLIDOT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(AYUDA, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(AYUDA, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(APELLIDOT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(RecepcionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(CEDULA)
@@ -241,7 +360,7 @@ public class Registro_Meseros extends javax.swing.JFrame {
                 .addGroup(RecepcionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(RecepcionLayout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addComponent(listames)
+                        .addComponent(listameseros)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(RecepcionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -250,7 +369,7 @@ public class Registro_Meseros extends javax.swing.JFrame {
                         .addComponent(comprobar))
                     .addGroup(RecepcionLayout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addComponent(listame)
+                        .addComponent(listamesas)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -447,7 +566,8 @@ public class Registro_Meseros extends javax.swing.JFrame {
                 if (TCCMES1.getText().equals("")) {
                     JOptionPane.showMessageDialog(null, "El número de identificación está en blanco.", "ESPACIOS EN BLANCO", ERROR_MESSAGE);
                 }else{
-                    
+                    String nombreCompleto = TNOMMES1.getText().concat(" ").concat(TAPEMES1.getText());
+                    modificarArchivo(nombreCompleto, Integer.parseInt(TCCMES1.getText()));
                     Generar();
                     nnom = 1;
                     nape = 1;
@@ -467,7 +587,7 @@ public class Registro_Meseros extends javax.swing.JFrame {
     }//GEN-LAST:event_GENERARActionPerformed
     
     //<editor-fold defaultstate="collapsed" desc="Eventos al presionar teclas">
-    int nape = 1;
+
     private void TAPEMES1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TAPEMES1KeyTyped
         char CR = evt.getKeyChar();
         String R = "\b", cr = "" + CR, E = "\n";
@@ -498,7 +618,7 @@ public class Registro_Meseros extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_TAPEMES1KeyTyped
-    int ncc = 1;
+    
     private void TCCMES1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCCMES1KeyTyped
         
         char CR = evt.getKeyChar();
@@ -551,8 +671,9 @@ public class Registro_Meseros extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    //<editor-fold defaultstate="collapsed" desc="Comprobar las mesas del mesero seleccionado.">
     private void comprobarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comprobarActionPerformed
-        int p = listameseros.getSelectedIndex();
+        int p = listaMeseros.getSelectedIndex();
         if(p == -1){
             JOptionPane.showMessageDialog(null, "No ha seleccionado ningún nombre.", "ERROR", ERROR_MESSAGE);
         }else{
@@ -581,7 +702,9 @@ public class Registro_Meseros extends javax.swing.JFrame {
             
         }
     }//GEN-LAST:event_comprobarActionPerformed
-
+//</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Reserva la mesa elegida para el visitante.">
     private void RESERVARActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RESERVARActionPerformed
         
         if (NOMBRET.getText().equals("")) {
@@ -627,16 +750,26 @@ public class Registro_Meseros extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_RESERVARActionPerformed
-
-
+//</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Subrutina <ReservarMesa>, recibe como parametro un entero llamado < p >">
+    /**
+     * Subrutina que toma el número para buscarlo entre los nodos {MESA}
+     * continuar a la siguiente ventana llamada {MENÚ} y actualizar la lista
+     * para mostrar la mesa como ocupada.
+     * @param p Recibe el número de la posición seleccionada en la lista para reservarla. 
+     * @since Primera Entrega.
+     */
     public void ReservarMesa(int p){
+        
+        Menú menu = new Menú();
         pMesero = ptrMesero;
-        boolean sw = true;
-        while(pMesero != null && sw == true) {
+        boolean swr = true;
+        while(pMesero != null && swr == true) {
             pMesa = pMesero.ptrMesa;
-            while(pMesa.link != null && sw == true){
+            while(pMesa.link != null && swr == true){
                 if (p == pMesa.mesan) {
-                    sw = false;
+                    swr = false;
                     menu.nombreMesero = pMesero.nombre;
                     menu.idMesa = pMesa.mesan;
                     pMesa.disponible = false;
@@ -652,48 +785,9 @@ public class Registro_Meseros extends javax.swing.JFrame {
         }
         
     }
+    //</editor-fold>
     
-    //<editor-fold defaultstate="collapsed" desc="Comprobantes al presionar teclas">
-    
-    private void NOMBRETKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NOMBRETKeyTyped
-        char CR = evt.getKeyChar();
-        if((!Character.isLetter(CR) || Character.isDigit(CR))) { 
-            evt.consume();
-        }else{
-            NOMBRET.setText(MayusInicial(NOMBRET.getText()));
-        }
-        
-    }//GEN-LAST:event_NOMBRETKeyTyped
-
-    private void APELLIDOTKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_APELLIDOTKeyTyped
-        char CR = evt.getKeyChar();
-        if((!Character.isLetter(CR) || Character.isDigit(CR))) { 
-            evt.consume();
-        }else{
-            APELLIDOT.setText(MayusInicial(APELLIDOT.getText()));
-        }
-    }//GEN-LAST:event_APELLIDOTKeyTyped
-    int ct = 1;
-    private void CEDULATKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CEDULATKeyTyped
-        char CR = evt.getKeyChar();
-        String R = "\b", cr = "" + CR;
-        if(cr.equals(R) && ct > 0){
-            ct--;
-        }else{
-            if((Character.isLetter(CR) || !Character.isDigit(CR))) { 
-                evt.consume();
-            }else{
-
-                if(ct > 10){
-                    evt.consume();
-                    JOptionPane.showMessageDialog(null, "El número de identificación no puede tener mas de 10 digitos.", "DEMASIADOS NÚMEROS", ERROR_MESSAGE);
-                }else{
-                    ct++;
-                }
-            }
-        }
-    }//GEN-LAST:event_CEDULATKeyTyped
-
+        int ct = 1;
     private void TAPEMES1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TAPEMES1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_TAPEMES1ActionPerformed
@@ -737,7 +831,13 @@ public class Registro_Meseros extends javax.swing.JFrame {
     //</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="Automaticamente pone la primera letra del campo de texto en mayuscula">
+    /**
+     * Recibe como parámetro una variable de tipo {String} a la cual se le cambiará su primera letra por una mayúscula.
+     * @param Texto Recibe la cadena a la cual se le cambiará la primera letra por mayúscula.
+     * @return Regresa la cadena con mayúscula inicial. Ej: Entra miguel, retorna Miguel.
+     */
     public String MayusInicial(String Texto){
+
         if(Texto.length() > 0){
                 char pl = Texto.charAt(0);
                 Texto = Character.toUpperCase(pl) + Texto.substring(1, Texto.length());
@@ -746,6 +846,12 @@ public class Registro_Meseros extends javax.swing.JFrame {
     }
     //</editor-fold>
     
+    //<editor-fold defaultstate="collapsed" desc="Subrutinas <Generar>, una con parámetros y otra sin parámetros">
+    /**
+     * Subrutina {Generar} que no recibe parámetros, y su función es como su nombre lo dice
+     * generar los meseros 1 por uno, es la utilizada cuando no hay ningún archivo creado.
+     * @since Segunda Entrega.
+     */
     public void Generar(){
         String NOMBREC = TNOMMES1.getText() + (" ") + (TAPEMES1.getText());
         if(ptrMesero == null){
@@ -769,6 +875,29 @@ public class Registro_Meseros extends javax.swing.JFrame {
         }
        
     }
+    /**
+     * Esta subrutina al igual que la que lleva su mismo nombre genera a los meseros
+     * con la única diferencia de que esta es utilizada para crearlos utilizando el archivo
+     * {Meseros} existente utilizando los parametros {nombre} y {cedula}.
+     * @param nombre Recibe el nombre y lo utiliza como uno de los parámetros para crear el nodo del mesero.
+     * @param cedula Recibe la cedula y la utiliza como otro de los parámetros para crear el nodo del mesero.
+     * @since Segunda Entrega.
+     */
+    public void Generar(String nombre, int cedula){
+        if(ptrMesero == null){
+            ptrMesero = new Mesero(cedula, nombre, cont);
+        }else{
+            pMesero = ptrMesero;
+            qMesero = new Mesero(cedula, nombre, cont);
+            while(pMesero.linkMesero != null){
+                pMesero = pMesero.linkMesero;
+            }
+            pMesero.linkMesero = qMesero;
+        }
+        cont = cont + 5;
+        mc++;
+    }
+    //</editor-fold>
     
     /**
      * @param args the command line arguments
@@ -842,9 +971,9 @@ public class Registro_Meseros extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JList<String> listaMesas;
-    private javax.swing.JLabel listame;
-    private javax.swing.JLabel listames;
-    private javax.swing.JList<String> listameseros;
+    private javax.swing.JList<String> listaMeseros;
+    private javax.swing.JLabel listamesas;
+    private javax.swing.JLabel listameseros;
     private javax.swing.JLabel titulo;
     // End of variables declaration//GEN-END:variables
     //</editor-fold>

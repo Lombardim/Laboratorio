@@ -11,8 +11,6 @@ public class Mesero {
         this.ced = ced;
         this.nombre = nombre;
         linkMesero = null;
-        System.out.println("Mesas predeterminadas para " + this.nombre);
-        System.out.println("Mesero de ID: " + ced);
         for (int i = 0; i < 6; i++) {
             if(ptrMesa == null){
 

@@ -34,9 +34,9 @@
                                               <Component id="CEDULA" alignment="0" max="32767" attributes="0"/>
                                           </Group>
                                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                              <Component id="APELLIDOT" pref="350" max="32767" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" attributes="0">
                                               <Component id="NOMBRET" alignment="0" max="32767" attributes="0"/>
+                                              <Component id="APELLIDOT" alignment="0" max="32767" attributes="0"/>
                                               <Component id="CEDULAT" alignment="0" max="32767" attributes="0"/>
                                           </Group>
                                       </Group>
@@ -50,7 +50,7 @@
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="listame" alignment="0" pref="120" max="32767" attributes="0"/>
+                              <Component id="listamesas" alignment="0" pref="120" max="32767" attributes="0"/>
                               <Component id="jScrollPane1" alignment="0" pref="0" max="32767" attributes="0"/>
                           </Group>
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -59,7 +59,7 @@
                                   <Component id="RESERVAR" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="listames" pref="187" max="32767" attributes="0"/>
+                                      <Component id="listameseros" pref="187" max="32767" attributes="0"/>
                                       <Component id="jScrollPane2" pref="0" max="32767" attributes="0"/>
                                   </Group>
                                   <EmptySpace max="32767" attributes="0"/>
@@ -83,15 +83,15 @@
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="hint" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="NOMBRE" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="NOMBRET" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="NOMBRE" min="-2" max="-2" attributes="0"/>
+                      <Component id="NOMBRET" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="APELLIDO" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="APELLIDOT" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="AYUDA" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                      <Component id="APELLIDOT" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -101,7 +101,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                          <Component id="listames" min="-2" max="-2" attributes="0"/>
+                          <Component id="listameseros" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" attributes="0">
                               <Component id="jScrollPane2" min="-2" pref="102" max="-2" attributes="0"/>
@@ -112,7 +112,7 @@
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="listame" min="-2" max="-2" attributes="0"/>
+                          <Component id="listamesas" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jScrollPane1" min="-2" pref="131" max="-2" attributes="0"/>
                       </Group>
@@ -137,39 +137,15 @@
             <Property name="text" type="java.lang.String" value="NOMBRE: "/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="NOMBRET">
-          <Properties>
-            <Property name="focusTraversalPolicyProvider" type="boolean" value="true"/>
-          </Properties>
-          <Events>
-            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="NOMBRETKeyTyped"/>
-          </Events>
-        </Component>
         <Component class="javax.swing.JLabel" name="APELLIDO">
           <Properties>
             <Property name="text" type="java.lang.String" value="APELLIDO: "/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="APELLIDOT">
-          <Properties>
-            <Property name="focusTraversalPolicyProvider" type="boolean" value="true"/>
-          </Properties>
-          <Events>
-            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="APELLIDOTKeyTyped"/>
-          </Events>
-        </Component>
         <Component class="javax.swing.JLabel" name="CEDULA">
           <Properties>
             <Property name="text" type="java.lang.String" value="C.C:"/>
           </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="CEDULAT">
-          <Properties>
-            <Property name="focusTraversalPolicyProvider" type="boolean" value="true"/>
-          </Properties>
-          <Events>
-            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="CEDULATKeyTyped"/>
-          </Events>
         </Component>
         <Container class="javax.swing.JScrollPane" name="jScrollPane1">
           <AuxValues>
@@ -207,7 +183,7 @@
             <Property name="text" type="java.lang.String" value="Llene los campos y seleccione la mesa donde quiera sentarse."/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="listame">
+        <Component class="javax.swing.JLabel" name="listamesas">
           <Properties>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="66" green="cc" red="0" type="rgb"/>
@@ -223,6 +199,9 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AYUDAActionPerformed"/>
           </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="AYUDA.setVisible(false);"/>
+          </AuxValues>
         </Component>
         <Container class="javax.swing.JScrollPane" name="jScrollPane2">
           <AuxValues>
@@ -231,7 +210,7 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JList" name="listameseros">
+            <Component class="javax.swing.JList" name="listaMeseros">
               <Properties>
                 <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
                   <StringArray count="0"/>
@@ -243,7 +222,7 @@
             </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JLabel" name="listames">
+        <Component class="javax.swing.JLabel" name="listameseros">
           <Properties>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="66" green="cc" red="0" type="rgb"/>
@@ -259,6 +238,12 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="comprobarActionPerformed"/>
           </Events>
+        </Component>
+        <Component class="javax.swing.JTextField" name="NOMBRET">
+        </Component>
+        <Component class="javax.swing.JTextField" name="APELLIDOT">
+        </Component>
+        <Component class="javax.swing.JTextField" name="CEDULAT">
         </Component>
       </SubComponents>
     </Container>

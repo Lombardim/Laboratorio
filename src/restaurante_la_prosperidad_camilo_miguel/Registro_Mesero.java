@@ -1,6 +1,8 @@
 package restaurante_la_prosperidad_camilo_miguel;
 
 import java.io.*;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -8,13 +10,13 @@ import javax.swing.*;
 import static javax.swing.JOptionPane.*;
 
 
-public class Registro_Meseros extends javax.swing.JFrame {    
+public class Registro_Mesero extends javax.swing.JFrame {    
     boolean sw = true;
     Mesero ptrMesero, pMesero, qMesero;
-    int mc = 0, cont = 1, nape = 1, ncc = 1; 
+    int mc = 0, cont = 1, nape = 1, ncc = 1, cedulaMfact; 
     Mesa pMesa;
     File archivoN;
-    String URLarchivo = "C:\\Users\\Personal\\Documents\\NetBeansProjects\\Restaurante_La_Prosperidad_Camilo_Miguel\\src\\archivos\\Meseros.txt";
+    String URLarchivo = "C:\\Users\\user\\Documents\\NetBeansProjects\\Laboratorio\\src\\archivos\\Meseros.txt";
     
     //<editor-fold defaultstate="collapsed" desc="Manejo de archivos">
     /**
@@ -134,7 +136,7 @@ public class Registro_Meseros extends javax.swing.JFrame {
      * a los meseros y muestra la recepción, si no, entonces mostrará la ventana en donde se crearan los 4 meseros y generara un archivo llamado
      * {Meseros.txt} que será utilizado para la próxima vez que se corra el algoritmo.
      */
-    public Registro_Meseros() {
+    public Registro_Mesero() {
         abrirArchivo();
         ptrMesero = null;
         initComponents();
@@ -229,6 +231,20 @@ public class Registro_Meseros extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jRadioButton5 = new javax.swing.JRadioButton();
         jButton1 = new javax.swing.JButton();
+        Facturacion = new javax.swing.JFrame();
+        nombreFacturacion = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        listaMesasFacturacion = new javax.swing.JList<>();
+        generarFactura = new javax.swing.JButton();
+        Factura = new javax.swing.JFrame();
+        facturaPanel = new javax.swing.JPanel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        textoFactura1 = new javax.swing.JTextArea();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        textoFactura2 = new javax.swing.JTextArea();
         PMES = new javax.swing.JPanel();
         NOMMES1 = new javax.swing.JLabel();
         APEMES1 = new javax.swing.JLabel();
@@ -284,11 +300,34 @@ public class Registro_Meseros extends javax.swing.JFrame {
         listameseros.setForeground(new java.awt.Color(0, 204, 102));
         listameseros.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         listameseros.setText("MESEROS:");
+        listameseros.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                listameserosMouseClicked(evt);
+            }
+        });
 
         comprobar.setText("COMPROBAR");
         comprobar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comprobarActionPerformed(evt);
+            }
+        });
+
+        NOMBRET.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                NOMBRETKeyTyped(evt);
+            }
+        });
+
+        APELLIDOT.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                APELLIDOTKeyTyped(evt);
+            }
+        });
+
+        CEDULAT.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                CEDULATKeyTyped(evt);
             }
         });
 
@@ -431,6 +470,133 @@ public class Registro_Meseros extends javax.swing.JFrame {
         });
         Gerente.getContentPane().add(jButton1);
         jButton1.setBounds(200, 210, 130, 23);
+
+        Facturacion.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        Facturacion.setTitle("VENTANA FACTURACION");
+        Facturacion.setMinimumSize(new java.awt.Dimension(300, 310));
+        Facturacion.setPreferredSize(new java.awt.Dimension(300, 310));
+        Facturacion.setSize(new java.awt.Dimension(300, 310));
+
+        nombreFacturacion.setText("Mesero a cargo: ");
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "MESAS CON FACTURACION DISPONIBLE", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+
+        jScrollPane4.setViewportView(listaMesasFacturacion);
+
+        generarFactura.setText("GENERAR FACTURA");
+        generarFactura.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                generarFacturaActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
+            .addComponent(generarFactura, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(generarFactura))
+        );
+
+        javax.swing.GroupLayout FacturacionLayout = new javax.swing.GroupLayout(Facturacion.getContentPane());
+        Facturacion.getContentPane().setLayout(FacturacionLayout);
+        FacturacionLayout.setHorizontalGroup(
+            FacturacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, FacturacionLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(FacturacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(nombreFacturacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        FacturacionLayout.setVerticalGroup(
+            FacturacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(FacturacionLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(nombreFacturacion)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        Factura.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        Factura.setTitle("FACTURA");
+        Factura.setResizable(false);
+        Factura.setSize(new java.awt.Dimension(304, 425));
+
+        facturaPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "FACTURA", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        facturaPanel.setMinimumSize(new java.awt.Dimension(252, 360));
+        facturaPanel.setPreferredSize(new java.awt.Dimension(252, 360));
+        facturaPanel.setLayout(null);
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"PLATO 1", "2", "50.000,00$"}
+            },
+            new String [] {
+                "PRODUCTO", "CANT.", "PRECIO UN."
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane5.setViewportView(jTable1);
+        if (jTable1.getColumnModel().getColumnCount() > 0) {
+            jTable1.getColumnModel().getColumn(0).setResizable(false);
+            jTable1.getColumnModel().getColumn(1).setResizable(false);
+            jTable1.getColumnModel().getColumn(1).setPreferredWidth(4);
+            jTable1.getColumnModel().getColumn(2).setResizable(false);
+            jTable1.getColumnModel().getColumn(2).setPreferredWidth(33);
+        }
+
+        facturaPanel.add(jScrollPane5);
+        jScrollPane5.setBounds(10, 160, 275, 100);
+
+        textoFactura1.setColumns(20);
+        textoFactura1.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        textoFactura1.setRows(5);
+        textoFactura1.setText("._____RESTAURANTE LA PROSPERIDAD_____.\n. Hora en la que se realizó la facturación: \n.  \n. Hora del pedido:\n. Nombre del cliente: \n. Cédula del cliente: \n. \n. Productos ordenados:");
+        textoFactura1.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        textoFactura1.setEnabled(false);
+        jScrollPane7.setViewportView(textoFactura1);
+
+        facturaPanel.add(jScrollPane7);
+        jScrollPane7.setBounds(10, 20, 275, 140);
+
+        textoFactura2.setColumns(20);
+        textoFactura2.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        textoFactura2.setRows(5);
+        textoFactura2.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        textoFactura2.setEnabled(false);
+        jScrollPane8.setViewportView(textoFactura2);
+
+        facturaPanel.add(jScrollPane8);
+        jScrollPane8.setBounds(10, 260, 275, 110);
+
+        javax.swing.GroupLayout FacturaLayout = new javax.swing.GroupLayout(Factura.getContentPane());
+        Factura.getContentPane().setLayout(FacturaLayout);
+        FacturaLayout.setHorizontalGroup(
+            FacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(facturaPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        FacturaLayout.setVerticalGroup(
+            FacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(FacturaLayout.createSequentialGroup()
+                .addComponent(facturaPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 35, Short.MAX_VALUE))
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("REGISTRO");
@@ -587,7 +753,6 @@ public class Registro_Meseros extends javax.swing.JFrame {
     }//GEN-LAST:event_GENERARActionPerformed
     
     //<editor-fold defaultstate="collapsed" desc="Eventos al presionar teclas">
-
     private void TAPEMES1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TAPEMES1KeyTyped
         char CR = evt.getKeyChar();
         String R = "\b", cr = "" + CR, E = "\n";
@@ -674,6 +839,7 @@ public class Registro_Meseros extends javax.swing.JFrame {
     //<editor-fold defaultstate="collapsed" desc="Comprobar las mesas del mesero seleccionado.">
     private void comprobarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comprobarActionPerformed
         int p = listaMeseros.getSelectedIndex();
+        String ncmc = NOMBRET.getText().concat(" ").concat(APELLIDOT.getText());
         if(p == -1){
             JOptionPane.showMessageDialog(null, "No ha seleccionado ningún nombre.", "ERROR", ERROR_MESSAGE);
         }else{
@@ -685,21 +851,43 @@ public class Registro_Meseros extends javax.swing.JFrame {
                 }
             }
             pMesa = pMesero.ptrMesa;
-            for (int i = 0; i < 5; i++) {
-                if (pMesa.disponible == true) {
+            if (pMesero.nombre.equals(ncmc)) {
+                cedulaMfact = Integer.parseInt(CEDULAT.getText());
+                if(cedulaMfact == pMesero.ced){
                     
-                    MesasACargo = MesasACargo + "Mesa " + pMesa.mesan + " - Disponible" + "\n";
-                    
+                    DefaultListModel model = new DefaultListModel();
+                    while(pMesa.link != null){
+                        if(pMesa.disponible == false){
+                            model.addElement("Mesa #" + pMesa.mesan);    
+                        }
+                        pMesa = pMesa.link;
+                    }
+                    listaMesasFacturacion.setModel(model);
+                    nnom = 1;
+                    nape = 1;
+                    ncc = 1;
+                    nombreFacturacion.setText("Mesero a cargo: " + pMesero.nombre);
+                    Facturacion.setVisible(true);
+                    Facturacion.setLocationRelativeTo(null);
                 }else{
-                    
-                    MesasACargo = MesasACargo + "Mesa " + pMesa.mesan + " - Ocupada" + "\n";
-                    
+                    JOptionPane.showMessageDialog(null, "La cédula " + CEDULAT.getText() + " no concuerda con la cédula del mesero.", "CÉDULA INCORRECTA", ERROR_MESSAGE);
                 }
-                
-                pMesa = pMesa.link;
+            }else{
+                for (int i = 0; i < 5; i++) {
+                    if (pMesa.disponible == true) {
+
+                        MesasACargo = MesasACargo + "Mesa " + pMesa.mesan + " - Disponible" + "\n";
+
+                    }else{
+
+                        MesasACargo = MesasACargo + "Mesa " + pMesa.mesan + " - Ocupada" + "\n";
+
+                    }
+
+                    pMesa = pMesa.link;
+                }
+                JOptionPane.showMessageDialog(null, MesasACargo, "Mesas a cargo del mesero " + pMesero.nombre, INFORMATION_MESSAGE);
             }
-            JOptionPane.showMessageDialog(null, MesasACargo, "Mesas a cargo del mesero " + pMesero.nombre, INFORMATION_MESSAGE);
-            
         }
     }//GEN-LAST:event_comprobarActionPerformed
 //</editor-fold>
@@ -743,7 +931,13 @@ public class Registro_Meseros extends javax.swing.JFrame {
                             dUl = nMesaR.substring((nMesaR.length() - 2), nMesaR.length());
                         }
                         int nTb = Integer.parseInt(dUl);
-                        ReservarMesa(nTb);
+                        ncc = 1;
+                        nape = 1;
+                        nnom = 1;
+                        Menú menu = new Menú();
+                        menu.nombreCliente = NOMBRET.getText().concat(" ").concat(APELLIDOT.getText());
+                        menu.cedulaCliente = Integer.parseInt(CEDULAT.getText());
+                        ReservarMesa(nTb, menu);
                         listaMesas();
                     }
                 }
@@ -758,11 +952,12 @@ public class Registro_Meseros extends javax.swing.JFrame {
      * continuar a la siguiente ventana llamada {MENÚ} y actualizar la lista
      * para mostrar la mesa como ocupada.
      * @param p Recibe el número de la posición seleccionada en la lista para reservarla. 
+     * @param menuR 
      * @since Primera Entrega.
      */
-    public void ReservarMesa(int p){
+    public void ReservarMesa(int p, Menú menuR){
         
-        Menú menu = new Menú();
+        Menú menu = menuR;
         pMesero = ptrMesero;
         boolean swr = true;
         while(pMesero != null && swr == true) {
@@ -828,6 +1023,107 @@ public class Registro_Meseros extends javax.swing.JFrame {
             
         }
     }//GEN-LAST:event_TNOMMES1KeyTyped
+
+    private void NOMBRETKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NOMBRETKeyTyped
+        char CR = evt.getKeyChar();
+        String R = "\b", cr = "" + CR, E = "\n";
+        if (!cr.equals(E)) {
+            if(cr.equals(R) && nnom > 0){
+                nnom--;
+            }else{
+                if((!Character.isLetter(CR) || Character.isDigit(CR))) { 
+                    evt.consume();
+                }else{
+                    NOMBRET.setText(MayusInicial(NOMBRET.getText()));
+                }
+                if(nnom > 10){
+                    evt.consume();
+                    JOptionPane.showMessageDialog(null, "El nombre no puede tener mas de 10 caracteres.", "DEMASIADAS LETRAS", ERROR_MESSAGE);
+                }else{
+                    nnom++;
+                }
+            }
+        }
+    }//GEN-LAST:event_NOMBRETKeyTyped
+
+    private void APELLIDOTKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_APELLIDOTKeyTyped
+        char CR = evt.getKeyChar();
+        String R = "\b", cr = "" + CR, E = "\n";
+        if (!cr.equals(E)) {
+            if(cr.equals(R) && nape > 0){
+                nape--;
+            }else{
+                if((!Character.isLetter(CR) || Character.isDigit(CR))) { 
+                    evt.consume();
+                }else{
+                    APELLIDOT.setText(MayusInicial(APELLIDOT.getText()));
+                }
+                if(nape > 10){
+                    evt.consume();
+                    JOptionPane.showMessageDialog(null, "El apellido no puede tener mas de 10 caracteres.", "DEMASIADAS LETRAS", ERROR_MESSAGE);
+                }else{
+                    nape++;
+                }
+            }
+        }
+    }//GEN-LAST:event_APELLIDOTKeyTyped
+
+    private void CEDULATKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CEDULATKeyTyped
+        char CR = evt.getKeyChar();
+        String R = "\b", cr = "" + CR, E = "\n";
+        if (!cr.equals(E)) {
+            if(cr.equals(R) && ncc > 0){
+                ncc--;
+            }else{
+                if((Character.isLetter(CR) || !Character.isDigit(CR))) { 
+                    evt.consume();
+                }else{
+
+                    if(ncc > 10){
+                        evt.consume();
+                        JOptionPane.showMessageDialog(null, "El número de identificación no puede tener mas de 10 digitos.", "DEMASIADOS NÚMEROS", ERROR_MESSAGE);
+                    }else{
+                        ncc++;
+                    }
+
+                }
+            }
+        }
+    }//GEN-LAST:event_CEDULATKeyTyped
+
+    private void listameserosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listameserosMouseClicked
+        JOptionPane.showMessageDialog(null, "Haga click en alguno de los nombres de los meseros,\n"
+                + "luego en el botón [COMPROBAR] para ver que mesas tiene a cargo el mesero\n"
+                + "y saber si están disponibles o no.", "AYUDA", INFORMATION_MESSAGE);
+    }//GEN-LAST:event_listameserosMouseClicked
+
+    private void generarFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generarFacturaActionPerformed
+        int posFact = listaMesasFacturacion.getSelectedIndex();
+        if(posFact == -1){
+            JOptionPane.showMessageDialog(null, "Seleccione alguna posición en la lista para generar la información.", "NINGUNA POSICIÓN SELECCIONADA", ERROR_MESSAGE);
+        }else{
+            Calendar horaFactura = new GregorianCalendar();
+            int hh = horaFactura.get(Calendar.HOUR_OF_DAY), mm = horaFactura.get(Calendar.MINUTE), ss = horaFactura.get(Calendar.SECOND);
+            String horaFacturacion = (hh < 10?"0":"") + hh + ":" + (mm < 10?"0":"") + mm + ":" + (ss < 10?"0":"") + ss, horaPedidoR, nombreClientef;
+            int cedulaClientef;
+            float preciototali, IVA, propina, preciototal;
+            textoFactura1.setText("._____RESTAURANTE LA PROSPERIDAD_____.\n" +
+                ". Hora en la que se realizó la facturación: \n" +
+                ". " + horaFacturacion + " \n" +
+                ". Hora del pedido: \n" +
+                ". Nombre del cliente: \n" +
+                ". Cédula del cliente: \n" +
+                ". \n" +
+                ". Productos ordenados:");
+            textoFactura2.setText(". " + nombreFacturacion.getText()+ "\n" +
+                ". Cédula del mesero: " + cedulaMfact + "\n" +
+                ". IVA (20% del total comprado): " + "\n" +
+                ". Propina al mesero (10%): " + " \n" +
+                ". Precio a pagar: ");
+            Factura.setVisible(true);
+            Factura.setLocationRelativeTo(null);
+        }
+    }//GEN-LAST:event_generarFacturaActionPerformed
     //</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="Automaticamente pone la primera letra del campo de texto en mayuscula">
@@ -916,14 +1212,18 @@ public class Registro_Meseros extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Registro_Meseros.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Registro_Mesero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Registro_Meseros.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Registro_Mesero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Registro_Meseros.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Registro_Mesero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Registro_Meseros.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Registro_Mesero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -932,7 +1232,7 @@ public class Registro_Meseros extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Registro_Meseros().setVisible(true);
+                new Registro_Mesero().setVisible(true);
             }
         });
     }
@@ -946,6 +1246,8 @@ public class Registro_Meseros extends javax.swing.JFrame {
     private javax.swing.JLabel CCMES1;
     private javax.swing.JLabel CEDULA;
     private javax.swing.JTextField CEDULAT;
+    private javax.swing.JFrame Factura;
+    private javax.swing.JFrame Facturacion;
     private javax.swing.JButton GENERAR;
     private javax.swing.JFrame Gerente;
     private javax.swing.JLabel MENSAJEV;
@@ -960,9 +1262,12 @@ public class Registro_Meseros extends javax.swing.JFrame {
     private javax.swing.JTextField TNOMMES1;
     private javax.swing.JTextField TRESUMENVENTAS;
     private javax.swing.JButton comprobar;
+    private javax.swing.JPanel facturaPanel;
+    private javax.swing.JButton generarFactura;
     private javax.swing.JLabel hint;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JRadioButton jRadioButton3;
@@ -970,10 +1275,19 @@ public class Registro_Meseros extends javax.swing.JFrame {
     private javax.swing.JRadioButton jRadioButton5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JTable jTable1;
     private javax.swing.JList<String> listaMesas;
+    private javax.swing.JList<String> listaMesasFacturacion;
     private javax.swing.JList<String> listaMeseros;
     private javax.swing.JLabel listamesas;
     private javax.swing.JLabel listameseros;
+    private javax.swing.JLabel nombreFacturacion;
+    private javax.swing.JTextArea textoFactura1;
+    private javax.swing.JTextArea textoFactura2;
     private javax.swing.JLabel titulo;
     // End of variables declaration//GEN-END:variables
     //</editor-fold>

@@ -1,13 +1,17 @@
 package restaurante_la_prosperidad_camilo_miguel;
 
+import java.util.*;
+
 public class Menú extends javax.swing.JFrame {
 
     /**
      * Creates new form Menú
      */
+    Calendar hora = new GregorianCalendar();
     Cocina pedido = new Cocina();
-    public String nombreMesero;
-    public int cont=0, idMesa;
+    public String nombreMesero, nombreCliente;
+    public int cont=0, idMesa, cedulaCliente;
+    
     public Menú() {
         initComponents();
     }
@@ -85,11 +89,10 @@ public class Menú extends javax.swing.JFrame {
         JNP = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         PedidoButton = new javax.swing.JButton();
-        jLabel4 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        PAPA = new javax.swing.JLabel();
+        CALCULAR = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
-        PAP = new javax.swing.JButton();
-        jLabel9 = new javax.swing.JLabel();
+        CANCELAR = new javax.swing.JButton();
 
         Demostracion.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         Demostracion.setTitle("Demostracion");
@@ -101,6 +104,7 @@ public class Menú extends javax.swing.JFrame {
         TEXTODEMO.setColumns(20);
         TEXTODEMO.setRows(5);
         TEXTODEMO.setText("¡Texto de prueba!");
+        TEXTODEMO.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         TEXTODEMO.setEnabled(false);
         TEXTODEMO.setFocusable(false);
         jScrollPane1.setViewportView(TEXTODEMO);
@@ -147,9 +151,9 @@ public class Menú extends javax.swing.JFrame {
 
         Demostracionpl.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         Demostracionpl.setTitle("Demostracion");
-        Demostracionpl.setMinimumSize(new java.awt.Dimension(520, 530));
+        Demostracionpl.setMinimumSize(new java.awt.Dimension(530, 530));
         Demostracionpl.setResizable(false);
-        Demostracionpl.setSize(new java.awt.Dimension(520, 530));
+        Demostracionpl.setSize(new java.awt.Dimension(530, 530));
 
         IMAGENDEMOPL.setMaximumSize(new java.awt.Dimension(500, 277));
         IMAGENDEMOPL.setMinimumSize(new java.awt.Dimension(500, 277));
@@ -164,6 +168,7 @@ public class Menú extends javax.swing.JFrame {
         TEXTODEMOPL.setColumns(20);
         TEXTODEMOPL.setRows(5);
         TEXTODEMOPL.setText("¡Texto de prueba!");
+        TEXTODEMOPL.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         TEXTODEMOPL.setEnabled(false);
         TEXTODEMOPL.setFocusable(false);
         jScrollPane2.setViewportView(TEXTODEMOPL);
@@ -243,13 +248,13 @@ public class Menú extends javax.swing.JFrame {
         jPanel2.add(PCP);
         PCP.setBounds(340, 50, 80, 20);
 
-        PC1.setModel(new javax.swing.SpinnerNumberModel(0, 0, 100, 1));
+        PC1.setModel(new javax.swing.SpinnerNumberModel(0, 0, 10, 1));
         PC1.setEnabled(false);
         PC1.setFocusable(false);
         jPanel2.add(PC1);
         PC1.setBounds(270, 20, 50, 22);
 
-        PC2.setModel(new javax.swing.SpinnerNumberModel(0, 0, 100, 1));
+        PC2.setModel(new javax.swing.SpinnerNumberModel(0, 0, 10, 1));
         PC2.setEnabled(false);
         PC2.setFocusable(false);
         jPanel2.add(PC2);
@@ -285,19 +290,19 @@ public class Menú extends javax.swing.JFrame {
         jPanel2.add(PSA);
         PSA.setBounds(10, 140, 200, 20);
 
-        PC3.setModel(new javax.swing.SpinnerNumberModel(0, 0, 100, 1));
+        PC3.setModel(new javax.swing.SpinnerNumberModel(0, 0, 10, 1));
         PC3.setEnabled(false);
         PC3.setFocusable(false);
         jPanel2.add(PC3);
         PC3.setBounds(270, 80, 50, 22);
 
-        PC4.setModel(new javax.swing.SpinnerNumberModel(0, 0, 100, 1));
+        PC4.setModel(new javax.swing.SpinnerNumberModel(0, 0, 10, 1));
         PC4.setEnabled(false);
         PC4.setFocusable(false);
         jPanel2.add(PC4);
         PC4.setBounds(270, 110, 50, 22);
 
-        PC5.setModel(new javax.swing.SpinnerNumberModel(0, 0, 100, 1));
+        PC5.setModel(new javax.swing.SpinnerNumberModel(0, 0, 10, 1));
         PC5.setEnabled(false);
         PC5.setFocusable(false);
         jPanel2.add(PC5);
@@ -307,11 +312,11 @@ public class Menú extends javax.swing.JFrame {
         jPanel2.add(SRP);
         SRP.setBounds(340, 140, 80, 22);
 
-        CAP.setText("35.800,00$");
+        CAP.setText("40.000,00$");
         jPanel2.add(CAP);
         CAP.setBounds(340, 80, 80, 20);
 
-        SCHP.setText("40.000,00$");
+        SCHP.setText("35.800,00$");
         jPanel2.add(SCHP);
         SCHP.setBounds(340, 110, 80, 20);
 
@@ -425,13 +430,13 @@ public class Menú extends javax.swing.JFrame {
         jPanel3.add(TCP);
         TCP.setBounds(250, 45, 65, 22);
 
-        MTC.setModel(new javax.swing.SpinnerNumberModel(0, 0, 100, 1));
+        MTC.setModel(new javax.swing.SpinnerNumberModel(0, 0, 10, 1));
         MTC.setEnabled(false);
         MTC.setFocusable(false);
         jPanel3.add(MTC);
         MTC.setBounds(180, 20, 65, 22);
 
-        TCC.setModel(new javax.swing.SpinnerNumberModel(0, 0, 100, 1));
+        TCC.setModel(new javax.swing.SpinnerNumberModel(0, 0, 10, 1));
         TCC.setEnabled(false);
         TCC.setFocusable(false);
         jPanel3.add(TCC);
@@ -457,13 +462,13 @@ public class Menú extends javax.swing.JFrame {
         jPanel3.add(MSNN);
         MSNN.setBounds(5, 95, 140, 22);
 
-        EC.setModel(new javax.swing.SpinnerNumberModel(0, 0, 100, 1));
+        EC.setModel(new javax.swing.SpinnerNumberModel(0, 0, 10, 1));
         EC.setEnabled(false);
         EC.setFocusable(false);
         jPanel3.add(EC);
         EC.setBounds(180, 70, 65, 22);
 
-        MSNC.setModel(new javax.swing.SpinnerNumberModel(0, 0, 100, 1));
+        MSNC.setModel(new javax.swing.SpinnerNumberModel(0, 0, 10, 1));
         MSNC.setEnabled(false);
         MSNC.setFocusable(false);
         jPanel3.add(MSNC);
@@ -568,13 +573,13 @@ public class Menú extends javax.swing.JFrame {
         jPanel4.add(CCP);
         CCP.setBounds(190, 20, 65, 22);
 
-        CCC.setModel(new javax.swing.SpinnerNumberModel(0, 0, 100, 1));
+        CCC.setModel(new javax.swing.SpinnerNumberModel(0, 0, 10, 1));
         CCC.setEnabled(false);
         CCC.setFocusable(false);
         jPanel4.add(CCC);
         CCC.setBounds(130, 20, 50, 22);
 
-        GC.setModel(new javax.swing.SpinnerNumberModel(0, 0, 100, 1));
+        GC.setModel(new javax.swing.SpinnerNumberModel(0, 0, 10, 1));
         GC.setEnabled(false);
         GC.setFocusable(false);
         jPanel4.add(GC);
@@ -590,7 +595,7 @@ public class Menú extends javax.swing.JFrame {
         jPanel4.add(BJN);
         BJN.setBounds(10, 80, 120, 22);
 
-        JNC.setModel(new javax.swing.SpinnerNumberModel(0, 0, 100, 1));
+        JNC.setModel(new javax.swing.SpinnerNumberModel(0, 0, 10, 1));
         JNC.setEnabled(false);
         JNC.setFocusable(false);
         jPanel4.add(JNC);
@@ -611,43 +616,44 @@ public class Menú extends javax.swing.JFrame {
 
         PedidoButton.setText("HACER PEDIDO");
         PedidoButton.setEnabled(false);
+        PedidoButton.setVisible(false);
         PedidoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 PedidoButtonActionPerformed(evt);
             }
         });
         getContentPane().add(PedidoButton);
-        PedidoButton.setBounds(350, 320, 140, 23);
+        PedidoButton.setBounds(190, 320, 140, 23);
 
-        jLabel4.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel4.setText("Precio a pagar:");
-        getContentPane().add(jLabel4);
-        jLabel4.setBounds(120, 320, 90, 20);
+        PAPA.setBackground(new java.awt.Color(255, 255, 255));
+        PAPA.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        getContentPane().add(PAPA);
+        PAPA.setBounds(10, 320, 370, 20);
 
-        jButton2.setText("CALCULAR");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        CALCULAR.setText("CALCULAR");
+        CALCULAR.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                CALCULARActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton2);
-        jButton2.setBounds(510, 320, 100, 23);
+        getContentPane().add(CALCULAR);
+        CALCULAR.setBounds(510, 320, 100, 23);
 
         jLabel12.setBackground(new java.awt.Color(0, 0, 0));
         jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Fotos/menu4.jpg"))); // NOI18N
         getContentPane().add(jLabel12);
         jLabel12.setBounds(10, 10, 170, 170);
 
-        PAP.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        PAP.setText("00.000,00$");
-        PAP.setEnabled(false);
-        getContentPane().add(PAP);
-        PAP.setBounds(210, 320, 120, 23);
-
-        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Fotos/gruener-hintergrund.jpg"))); // NOI18N
-        getContentPane().add(jLabel9);
-        jLabel9.setBounds(0, 0, 640, 400);
+        CANCELAR.setText("CANCELAR PEDIDO");
+        CANCELAR.setEnabled(false);
+        CANCELAR.setVisible(false);
+        CANCELAR.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CANCELARActionPerformed(evt);
+            }
+        });
+        getContentPane().add(CANCELAR);
+        CANCELAR.setBounds(340, 320, 160, 23);
 
         pack();
         setLocationRelativeTo(null);
@@ -694,15 +700,21 @@ public class Menú extends javax.swing.JFrame {
         Demostracion.setVisible(true);        
     }//GEN-LAST:event_MSNIMouseClicked
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        int pt =  (((int)PC1.getValue()* 30700) + ((int)PC2.getValue()* 37000) + ((int)PC4.getValue()* 35800) + ((int)PC3.getValue()*40000)+((int)PC5.getValue()*28000) + ((int)CCC.getValue() * 2000) + ((int)GC.getValue() * 1900) + ((int)JNC.getValue() * 1800)) + (((int)MTC.getValue()*8300) + ((int)TCC.getValue() * 11800) + ((int)EC.getValue()*9700) + ((int)MSNC.getValue())*16200);
+    int pt;
+    private void CALCULARActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CALCULARActionPerformed
+        pt =  (((int)PC1.getValue()* 30700) + ((int)PC2.getValue()* 37000) + ((int)PC4.getValue()* 35800) + ((int)PC3.getValue()*40000)+((int)PC5.getValue()*28000) + ((int)CCC.getValue() * 2000) + ((int)GC.getValue() * 1900) + ((int)JNC.getValue() * 1800)) + (((int)MTC.getValue()*8300) + ((int)TCC.getValue() * 11800) + ((int)EC.getValue()*9700) + ((int)MSNC.getValue())*16200);
         if(pt != 0){
-            PAP.setText(Integer.toString(pt) + ",00$");
+            PAPA.setText("Precio a pagar: " + Integer.toString(pt) + ",00$");
+            PedidoButton.setVisible(true);
             PedidoButton.setEnabled(true);
+            CANCELAR.setText("CAMBIAR PEDIDO");
         }else{
-            PAP.setText("00.000,00$");
+            PAPA.setText("Presione cancelar y haga bien el pedido.");
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+        CANCELAR.setVisible(true);
+        CANCELAR.setEnabled(true);
+        CALCULAR.setEnabled(false);
+    }//GEN-LAST:event_CALCULARActionPerformed
 
     private void PKRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PKRActionPerformed
         if (PKR.isSelected()==true){
@@ -793,7 +805,6 @@ public class Menú extends javax.swing.JFrame {
         Demostracionpl.setVisible(true); 
     }//GEN-LAST:event_SARMouseClicked
 
-    
     private void PedidoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PedidoButtonActionPerformed
         if (PKR.isSelected()==true) {
             pedido.plato1 = PKR.getText();
@@ -870,7 +881,15 @@ public class Menú extends javax.swing.JFrame {
         pedido.cont = this.cont;
         pedido.MesaN = idMesa;
         pedido.nombreM = nombreMesero;
+        pedido.nombreC = nombreCliente;
+        pedido.cedulaC = cedulaCliente;
         this.dispose();
+        pedido.tp = pt;
+        int hh = hora.get(Calendar.HOUR_OF_DAY), mm = hora.get(Calendar.MINUTE), ss = hora.get(Calendar.SECOND);
+        pedido.horaP = (hh < 10?"0":"") + hh + ":" + (mm < 10?"0":"") + mm + ":" + (ss < 10?"0":"") + ss;
+        System.out.println(pedido.horaP);
+        pedido.actualizarGM();
+        pedido.generarMatriz();        
         pedido.setVisible(true);
         pedido.setLocationRelativeTo(null);
         
@@ -964,10 +983,20 @@ public class Menú extends javax.swing.JFrame {
           MSNC.setEnabled(false);
         }
     }//GEN-LAST:event_MSNNActionPerformed
+
+    private void CANCELARActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CANCELARActionPerformed
+        Menú menu = new Menú();
+        menu.idMesa = idMesa;
+        menu.nombreMesero = nombreMesero;
+        menu.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_CANCELARActionPerformed
     //se crea una jframe interno en el cuan contiene la factura con los pedidos que realizo y un joption para mostrar que ya pago.
+    
     /**
      * @param args the command line arguments
      */
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -1005,6 +1034,8 @@ public class Menú extends javax.swing.JFrame {
     private javax.swing.JRadioButton BCC;
     private javax.swing.JRadioButton BGS;
     private javax.swing.JRadioButton BJN;
+    private javax.swing.JButton CALCULAR;
+    private javax.swing.JButton CANCELAR;
     private javax.swing.JLabel CAP;
     private javax.swing.JLabel CCA;
     private javax.swing.JSpinner CCC;
@@ -1031,7 +1062,7 @@ public class Menú extends javax.swing.JFrame {
     private javax.swing.JLabel MTI;
     private javax.swing.JRadioButton MTN;
     private javax.swing.JLabel MTP;
-    private javax.swing.JButton PAP;
+    private javax.swing.JLabel PAPA;
     private javax.swing.JSpinner PC1;
     private javax.swing.JSpinner PC2;
     private javax.swing.JSpinner PC3;
@@ -1057,15 +1088,12 @@ public class Menú extends javax.swing.JFrame {
     private javax.swing.JLabel TCP;
     private javax.swing.JTextArea TEXTODEMO;
     private javax.swing.JTextArea TEXTODEMOPL;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;

@@ -2,6 +2,8 @@ package restaurante_la_prosperidad_camilo_miguel;
 
 import java.io.*;
 import java.util.logging.*;
+import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import javax.swing.table.DefaultTableModel;
 
 public class Cocina extends javax.swing.JFrame {
@@ -9,8 +11,8 @@ public class Cocina extends javax.swing.JFrame {
     /**
      * Creates new form Cocina
      */
-    String nombreM = "";
-    int cont, MesaN;
+    String nombreM = "", horaP = "", TP = "", nombreC;
+    int cont, MesaN, tp, cedulaC;
     String plato1="", plato2="", plato3="", plato4="", plato5="", bebida1="", bebida2="", bebida3="", postre1="", postre2="", postre3="", postre4="";
     int cantpl1, cantpl2, cantpl3,cantpl4, cantpl5, cantb1, cantb2, cantb3, cantpo1, cantpo2, cantpo3, cantpo4, cantpo5;
     float preciopl1, preciopl2, preciopl3, preciopl4, preciopl5, preciob1, preciob2, preciob3, preciopo1, preciopo2, preciopo3, preciopo4;
@@ -33,25 +35,25 @@ public class Cocina extends javax.swing.JFrame {
         Comanda = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         Ped = new javax.swing.JTable();
-        jSplitPane1 = new javax.swing.JSplitPane();
         jButton1 = new javax.swing.JButton();
-        ACTUALIZAR = new javax.swing.JButton();
         pedidoMesa = new javax.swing.JLabel();
         meseroCargo = new javax.swing.JLabel();
+        totalPagar = new javax.swing.JLabel();
+        horaPedido = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Pedidos");
-        setMinimumSize(new java.awt.Dimension(280, 390));
-        setPreferredSize(new java.awt.Dimension(280, 390));
+        setTitle("COCINA");
+        setMinimumSize(new java.awt.Dimension(280, 385));
+        setPreferredSize(new java.awt.Dimension(280, 385));
         setResizable(false);
-        setSize(new java.awt.Dimension(280, 390));
+        setSize(new java.awt.Dimension(280, 385));
 
         Ped.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Pedido", "Cantidad", "Precio Un."
+                "Pedido", "Cant.", "Precio Un."
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -66,10 +68,10 @@ public class Cocina extends javax.swing.JFrame {
         if (Ped.getColumnModel().getColumnCount() > 0) {
             Ped.getColumnModel().getColumn(0).setResizable(false);
             Ped.getColumnModel().getColumn(1).setResizable(false);
+            Ped.getColumnModel().getColumn(1).setPreferredWidth(10);
             Ped.getColumnModel().getColumn(2).setResizable(false);
+            Ped.getColumnModel().getColumn(2).setPreferredWidth(15);
         }
-
-        jSplitPane1.setFocusable(false);
 
         jButton1.setText("COCINAR");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -77,38 +79,33 @@ public class Cocina extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        jSplitPane1.setLeftComponent(jButton1);
-
-        ACTUALIZAR.setText("ACTUALIZAR");
-        ACTUALIZAR.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ACTUALIZARActionPerformed(evt);
-            }
-        });
-        jSplitPane1.setRightComponent(ACTUALIZAR);
 
         javax.swing.GroupLayout ComandaLayout = new javax.swing.GroupLayout(Comanda);
         Comanda.setLayout(ComandaLayout);
         ComandaLayout.setHorizontalGroup(
             ComandaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ComandaLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jSplitPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(69, Short.MAX_VALUE))
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addGap(85, 85, 85)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(85, Short.MAX_VALUE))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
         ComandaLayout.setVerticalGroup(
             ComandaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ComandaLayout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jSplitPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
                 .addContainerGap())
         );
 
         pedidoMesa.setText("Pedido de la mesa #: ");
 
         meseroCargo.setText("Mesero a cargo: ");
+
+        totalPagar.setText("Total a pagar: ");
+
+        horaPedido.setText("Hora en que se realizó el pedido: ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -119,19 +116,25 @@ public class Cocina extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(Comanda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(pedidoMesa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(meseroCargo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(meseroCargo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(totalPagar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(horaPedido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(40, 40, 40)
+                .addGap(20, 20, 20)
+                .addComponent(horaPedido)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pedidoMesa)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(meseroCargo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(totalPagar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(Comanda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         Comanda.getAccessibleContext().setAccessibleName("Mesa #1");
@@ -142,9 +145,10 @@ public class Cocina extends javax.swing.JFrame {
     public void generarMatriz(){
         int conta, pos=0;
         conta= this.cont;
+        float totalAPagar = 0;
         DefaultTableModel model = (DefaultTableModel) Ped.getModel();
         model.setRowCount(conta);
-        model.setColumnCount(3);
+        modificarArchivo("",2);
         modificarArchivo(MesaN);
         if (this.plato1.equals("Kati Roll")) {
             Ped.setValueAt(this.plato1, pos, 0);
@@ -228,48 +232,85 @@ public class Cocina extends javax.swing.JFrame {
             Ped.setValueAt(this.cantpo4, pos, 1);
             Ped.setValueAt(this.preciopo4, pos, 2);
             modificarArchivo(this.postre4 , this.cantpo4, this.preciopo4);
-            pos=pos+1;
+            pos = pos + 1;
         }
         Ped.setModel(model);
-        /*
-        this.Ped = new JTable(model){
-            @Override
-            public String getToolTipText( MouseEvent e ){
-                int row = rowAtPoint( e.getPoint() );
-                int column = columnAtPoint( e.getPoint() );
-                Object value = getValueAt(row, column);
-                return value == null ? null : value.toString();
-            }
-        };
-        this.jScrollPane1.setViewportView(Ped);
-        */
+        modificarArchivo("", 1);
+        modificarArchivo(horaP, 0);        
     }
     
-    private void ACTUALIZARActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ACTUALIZARActionPerformed
+    public void actualizarGM(){
+        String ttpp = "" + tp;
+        if (ttpp.length() < 4) {
+            TP = TP + ttpp;
+        }else{
+            if(ttpp.length() == 4){//1.000
+                TP = TP + ttpp.charAt(0) + "." + ttpp.substring(1, ttpp.length());
+            }else{
+                if (ttpp.length() == 5) {//10.000
+                    TP = TP + ttpp.substring(0, 2) + "." + ttpp.substring(2, ttpp.length());
+                }else{
+                    if (ttpp.length() == 6) {//100.000
+                        TP = TP + ttpp.charAt(0) + ttpp.charAt(1) + ttpp.charAt(2) + "." + ttpp.substring(3, ttpp.length());
+                    }else{
+                        if (ttpp.length() == 7) {//1'000.000
+                            TP = TP + ttpp.charAt(0) + "'" + ttpp.substring(1, 4) + "." + ttpp.substring(4, ttpp.length());
+                        }
+                    }
+                }
+            }
+        }
+        horaPedido.setText("Hora en que se realizó el pedido: " + horaP);
         pedidoMesa.setText("Pedido de la mesa #: " + MesaN + ".");
         meseroCargo.setText("Mesero a cargo: " + nombreM + ".");
-        archivo = new File("C:\\Users\\Personal\\Documents\\NetBeansProjects\\Restaurante_La_Prosperidad_Camilo_Miguel\\src\\archivos\\Pedido" + MesaN + ".txt");
-        generarMatriz();
-    }//GEN-LAST:event_ACTUALIZARActionPerformed
-    
+        totalPagar.setText("Total a pagar: " + TP + "$.");
+        archivo = new File("C:\\Users\\user\\Documents\\NetBeansProjects\\Laboratorio\\src\\archivos\\Pedido" + MesaN + ".txt");
+    }
+        
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         TiempoCoccion tc = new TiempoCoccion();
         tc.NomMesero = nombreM;
         tc.NumMesa = MesaN;
-        tc.Minutos = 1 + ((int)(Math.random() * 8));
-        tc.Segundos = 1 + ((int)(Math.random() * 59));
         tc.archivo = archivo;
-        System.out.println("Tiempo estimado de preparación = " + tc.Minutos + ":" + tc.Segundos);
+        tc.m = 5 + ((int)(Math.random() * 10));
+        tc.s = ((int)(Math.random() * 59));
+        tc.tmc = tc.m - 5;
+        tc.ma = (int)(Math.random() * (tc.m - 4));
+        System.out.println(tc.ma + ":" + tc.sa);
+        tc.actualizarCronometro();
+        JOptionPane.showMessageDialog(null, "El plato tardará aproximadamente " + tc.m + ":" + tc.s + " cocinandose.", "TIEMPO DE COCCIÓN", INFORMATION_MESSAGE);
+        System.out.println("Tiempo estimado de preparación = " + tc.m + ":" + tc.s);
         tc.setLocationRelativeTo(null);
         tc.setVisible(true);
         this.dispose();
         tc.crono.start();
     }//GEN-LAST:event_jButton1ActionPerformed
     
+    public void modificarArchivo(String horaPe, int c){
+        try(FileWriter fw = new FileWriter(archivo, true)){
+            Object hP = horaPe;
+            if (c == 0) {
+                fw.write("Hora a la que se realizó el pedido: " + hP + ".\r\n");
+            }else{
+                if(c == 1){
+                    fw.write("Fin del pedido.\r\n");
+                }else{
+                    fw.write("Nombre del cliente: " + nombreC + ".\r\n");
+                    fw.write("Cédula del cliente: " + cedulaC + ".\r\n");
+                }
+            }
+            
+        }catch(NullPointerException ex){
+            
+        }catch(IOException e){
+            Logger.getLogger(Cocina.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
+    
     public void modificarArchivo(int mesa){
         try(FileWriter fw = new FileWriter(archivo, true)){
             Object mesaA = mesa;
-            fw.write("Pedido de la mesa #" + mesaA + ":" + "\r\n");
+            fw.write("Pedido:" + "\r\n");
         }catch(NullPointerException ex){
             
         }catch(IOException e){
@@ -329,13 +370,13 @@ public class Cocina extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton ACTUALIZAR;
     private javax.swing.JPanel Comanda;
     public javax.swing.JTable Ped;
+    private javax.swing.JLabel horaPedido;
     private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JLabel meseroCargo;
     private javax.swing.JLabel pedidoMesa;
+    private javax.swing.JLabel totalPagar;
     // End of variables declaration//GEN-END:variables
 }

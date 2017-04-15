@@ -3,49 +3,79 @@ package restaurante_la_prosperidad_camilo_miguel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.*;
 import javax.swing.Timer;
 
 public class TiempoCoccion extends javax.swing.JFrame {
-    int Minutos, Segundos;
     File archivo;
+    String horaT;
+    int tmc, ma, sa = 1 + (int)(Math.random() * 59);
     ActionListener repeticion = new ActionListener(){
         
         @Override
         public void actionPerformed(ActionEvent AE) {
-            s++;
-            if(s == 60){
-                s = 0;
-                m = m + 1;
+            if(s > 0){
+                s--;
             }
-            if(m == 60){
-                m = 0;
-                h = h + 1;
+            
+            if(s == 0 && m > 0){
+                s = 59;
+                m = m - 1;
             }
-            if(h == 24){
-                crono.stop();
+            if(m == 0 && h > 0 && s == 0){
+                m = 59;
+                h = h - 1;
             }
-            if (m >= 5) {
+            if(m == ma && s == sa){
+                pedidoListo.setEnabled(true);
+            }
+            if (m == tmc) {
                 cancelarP.setEnabled(false);
             }
-            if (Minutos == m && Segundos == s) {
+            if (m == 0 && s == 0) {
                 crono.stop();
-                JOptionPane.showMessageDialog(null, "El plato está listo para ser servido.", "PLATO LISTO", INFORMATION_MESSAGE);
             }
             actualizarCronometro();
         }
         
     };
+    
+    public void modificarArchivo(String horaF){
+        try(FileWriter fw = new FileWriter(archivo, true)){
+            Object hT = horaF;
+            fw.write("Hora a la que se entregó el pedido: " + hT + ".");
+        }catch(NullPointerException ex){
+            
+        }catch(IOException e){
+            Logger.getLogger(Cocina.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
     int NumMesa;
     String NomMesero;
     int h = 0, m = 0, s = 0;
     String tiempo;
     Timer crono = new Timer(1000, repeticion);
+    
     public void actualizarCronometro(){
         tiempo = (h < 10?"0":"") + h + ":" + (m < 10?"0":"") + m + ":" + (s < 10? "0":"") + s; //(h < 10? "0":"") Sirve para agregar un tipo de valor, es decir si es menor que 10 se vera asi = 08 y si es mayor a 10 = 11;
         tiempoC.setText(tiempo);
-        if(m == Minutos && s == Segundos){
+        if(m == 0 && s == 0){
+            Calendar hora = new GregorianCalendar();
+            int hh = hora.get(Calendar.HOUR_OF_DAY), mm = hora.get(Calendar.MINUTE), ss = hora.get(Calendar.SECOND) + 15;
+            if(ss > 59){
+                mm = mm + 1;
+                ss = ss - 60;
+            }
+            horaT = (hh < 10?"0":"") + hh + ":" + (mm < 10?"0":"") + mm + ":" + (ss < 10?"0":"") + ss;
+            modificarArchivo(horaT);
+            JOptionPane.showMessageDialog(null, "El plato está listo para ser servido.", "PLATO LISTO", INFORMATION_MESSAGE);
             this.dispose(); 
         }
     }
@@ -65,12 +95,65 @@ public class TiempoCoccion extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        servirPedido = new javax.swing.JFrame();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        pedidoL = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         tiempoC = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         cancelarP = new javax.swing.JButton();
+        pedidoListo = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        pedidoL.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Pedido", "Cant.", "Precio Un."
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(pedidoL);
+        if (pedidoL.getColumnModel().getColumnCount() > 0) {
+            pedidoL.getColumnModel().getColumn(0).setResizable(false);
+            pedidoL.getColumnModel().getColumn(1).setResizable(false);
+            pedidoL.getColumnModel().getColumn(1).setPreferredWidth(10);
+            pedidoL.getColumnModel().getColumn(2).setResizable(false);
+            pedidoL.getColumnModel().getColumn(2).setPreferredWidth(15);
+        }
+
+        jButton1.setText("ENTREGAR PEDIDO");
+
+        javax.swing.GroupLayout servirPedidoLayout = new javax.swing.GroupLayout(servirPedido.getContentPane());
+        servirPedido.getContentPane().setLayout(servirPedidoLayout);
+        servirPedidoLayout.setHorizontalGroup(
+            servirPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, servirPedidoLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(servirPedidoLayout.createSequentialGroup()
+                .addGap(75, 75, 75)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        servirPedidoLayout.setVerticalGroup(
+            servirPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, servirPedidoLayout.createSequentialGroup()
+                .addContainerGap(94, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton1)
+                .addGap(19, 19, 19))
+        );
 
         jPanel1.setBackground(java.awt.Color.lightGray);
         jPanel1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -97,12 +180,20 @@ public class TiempoCoccion extends javax.swing.JFrame {
         );
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel5.setText("El plato estará listo dentro de: ");
+        jLabel5.setText("El plato estará listo aproximadamente dentro de:");
 
         cancelarP.setText("CANCELAR PEDIDO");
         cancelarP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelarPActionPerformed(evt);
+            }
+        });
+
+        pedidoListo.setText("PEDIDO LISTO");
+        pedidoListo.setEnabled(false);
+        pedidoListo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pedidoListoActionPerformed(evt);
             }
         });
 
@@ -116,9 +207,9 @@ public class TiempoCoccion extends javax.swing.JFrame {
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(111, 111, 111)
-                        .addComponent(cancelarP, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(cancelarP, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(pedidoListo, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -129,7 +220,9 @@ public class TiempoCoccion extends javax.swing.JFrame {
                 .addGap(9, 9, 9)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cancelarP)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cancelarP)
+                    .addComponent(pedidoListo))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
 
@@ -148,6 +241,11 @@ public class TiempoCoccion extends javax.swing.JFrame {
             this.dispose();
         }        
     }//GEN-LAST:event_cancelarPActionPerformed
+
+    private void pedidoListoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pedidoListoActionPerformed
+        m = 0;
+        s = 1;
+    }//GEN-LAST:event_pedidoListoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -187,8 +285,13 @@ public class TiempoCoccion extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelarP;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable pedidoL;
+    private javax.swing.JButton pedidoListo;
+    private javax.swing.JFrame servirPedido;
     private javax.swing.JLabel tiempoC;
     // End of variables declaration//GEN-END:variables
 }

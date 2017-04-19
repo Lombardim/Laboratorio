@@ -1,6 +1,7 @@
 package restaurante_la_prosperidad_camilo_miguel;
 
 import java.io.*;
+import java.util.StringTokenizer;
 import java.util.logging.*;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
@@ -13,15 +14,16 @@ public class Cocina extends javax.swing.JFrame {
      */
     String nombreM = "", horaP = "", TP = "", nombreC;
     int cont, MesaN, tp, cedulaC;
-    String plato1="", plato2="", plato3="", plato4="", plato5="", bebida1="", bebida2="", bebida3="", postre1="", postre2="", postre3="", postre4="";
-    int cantpl1, cantpl2, cantpl3,cantpl4, cantpl5, cantb1, cantb2, cantb3, cantpo1, cantpo2, cantpo3, cantpo4, cantpo5;
+    String plato1="", plato2="", plato3="", plato4="", plato5="", bebida1="", bebida2="", bebida3="", postre1="", postre2="", postre3="", postre4="",nombrePlat;
+    int cantpl1, cantpl2, cantpl3,cantpl4, cantpl5, cantb1, cantb2, cantb3, cantpo1, cantpo2, cantpo3, cantpo4, cantpo5, totalPlat, terminadosPlat, sw=0, platosInc =0;
     float preciopl1, preciopl2, preciopl3, preciopl4, preciopl5, preciob1, preciob2, preciob3, preciopo1, preciopo2, preciopo3, preciopo4;
+    String url = "src\\archivos";
     
     public Cocina() {
         initComponents();
     }
     
-    File archivo;
+    File archivo,  plato;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -239,7 +241,7 @@ public class Cocina extends javax.swing.JFrame {
         modificarArchivo(horaP, 0);        
     }
     
-    public void actualizarGM(){
+    void actualizarGM(){
         String ttpp = "" + tp;
         if (ttpp.length() < 4) {
             TP = TP + ttpp;
@@ -260,15 +262,26 @@ public class Cocina extends javax.swing.JFrame {
                 }
             }
         }
+        Registro_Mesero.horaPed = horaP;
         horaPedido.setText("Hora en que se realizó el pedido: " + horaP);
         pedidoMesa.setText("Pedido de la mesa #: " + MesaN + ".");
         meseroCargo.setText("Mesero a cargo: " + nombreM + ".");
-        totalPagar.setText("Total a pagar: " + TP + "$.");
-        archivo = new File("C:\\Users\\user\\Documents\\NetBeansProjects\\Laboratorio\\src\\archivos\\Pedido" + MesaN + ".txt");
+        totalPagar.setText("Total a pagar sin IVA: " + TP + "$.");
+        archivo = new File(url + "\\Pedido" + MesaN + ".txt");
     }
-        
+    
+    TiempoCoccion tc;
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        TiempoCoccion tc = new TiempoCoccion();
+        String producto;
+        int cantidad;
+        int p;
+        p = Ped.getRowCount();
+        for (int i = 0; i < p; i++) {
+            producto = Ped.getValueAt(i, 0).toString();
+            cantidad = (int) Ped.getValueAt(i, 1);
+            Aprovisionamiento(producto, cantidad); 
+        }
+        tc = new TiempoCoccion();
         tc.NomMesero = nombreM;
         tc.NumMesa = MesaN;
         tc.archivo = archivo;
@@ -278,7 +291,7 @@ public class Cocina extends javax.swing.JFrame {
         tc.ma = (int)(Math.random() * (tc.m - 4));
         System.out.println(tc.ma + ":" + tc.sa);
         tc.actualizarCronometro();
-        JOptionPane.showMessageDialog(null, "El plato tardará aproximadamente " + tc.m + ":" + tc.s + " cocinandose.", "TIEMPO DE COCCIÓN", INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "El pedido tardará aproximadamente " + tc.m + ":" + tc.s + " en la cocina.", "TIEMPO DE COCCIÓN", INFORMATION_MESSAGE);
         System.out.println("Tiempo estimado de preparación = " + tc.m + ":" + tc.s);
         tc.setLocationRelativeTo(null);
         tc.setVisible(true);
@@ -291,6 +304,7 @@ public class Cocina extends javax.swing.JFrame {
             Object hP = horaPe;
             if (c == 0) {
                 fw.write("Hora a la que se realizó el pedido: " + hP + ".\r\n");
+                fw.write("Cocinando...\r\n");
             }else{
                 if(c == 1){
                     fw.write("Fin del pedido.\r\n");
@@ -309,7 +323,6 @@ public class Cocina extends javax.swing.JFrame {
     
     public void modificarArchivo(int mesa){
         try(FileWriter fw = new FileWriter(archivo, true)){
-            Object mesaA = mesa;
             fw.write("Pedido:" + "\r\n");
         }catch(NullPointerException ex){
             
@@ -331,6 +344,190 @@ public class Cocina extends javax.swing.JFrame {
             Logger.getLogger(Cocina.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public void modificarLinea(File arc, String linea){
+        try(FileWriter bw = new FileWriter(arc, true)){
+            Object PL = linea;
+            bw.write( PL + "\r" + "\n" );
+        }catch(NullPointerException e){
+        
+        } catch (IOException ex) {
+            Logger.getLogger(Cocina.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void modificarLinea(String plato, int cantidad, int terminados, File arc){
+        try(FileWriter bw = new FileWriter(arc, true)){
+            Object PL = plato;
+            Object CA = cantidad;
+            Object PR = terminados;
+            bw.write( PL + ", " + CA + ", " + PR + "\r" + "\n" );
+        }catch(NullPointerException e){
+        
+        } catch (IOException ex) {
+            Logger.getLogger(Cocina.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public String Plato(String linea){
+        int tok = 1;
+        String platoo = null;
+        StringTokenizer mesa= new StringTokenizer(linea, ",");
+        while(mesa.hasMoreTokens()){
+            if (tok == 1) {
+                platoo = mesa.nextToken();
+                platoo = platoo.substring(0, platoo.length());
+            }
+            mesa.nextToken();
+            tok++;
+        }
+        return platoo;
+    }
+    
+    public int verificarArchivo(){
+        String files;
+        File folder = new File(url);
+        File[] listOfFiles = folder.listFiles(); 
+        for (int i = 0; i < listOfFiles.length; i++){ 
+            if (listOfFiles[i].isFile()){ 
+                files = listOfFiles[i].getName();
+                if (files.endsWith(".txt") || files.endsWith(".TXT")){
+                    if (files.equals("platos.txt")) {
+                        sw = 0;
+                    }else{
+                        if (files.equals("plato0.txt")) {
+                            sw = 1;
+                        }
+                    }
+                }
+            }    
+        }
+        return sw;
+    }
+    
+    public void consumoAlimentos(String NomPlato, int cantidad){
+        String arc = null;
+        sw = verificarArchivo();
+        if (sw == 0) {
+            arc = url + "\\platos.txt";
+            plato = new File(url + "\\plato" + sw + ".txt");
+        }else{
+            arc = url + "\\plato0.txt";
+            plato = new File(url + "\\platos.txt");
+        }
+        try(FileReader archivop = new FileReader(arc)){
+            try(BufferedReader br = new BufferedReader(archivop)) {
+                String linea;
+                String cantT, platosT, nombre;
+                int cant, contt = 1, platos;
+                while((linea = br.readLine()) != null){
+                    nombre = Plato(linea);
+                    if (nombre.equals(NomPlato)) {
+                        StringTokenizer nc = new StringTokenizer(linea, ",");
+                        while(nc.hasMoreTokens()){
+                            if (contt ==1) {
+                               nombre = nc.nextToken();
+                               nombre = nombre.substring(0, nombre.length());
+                               this.nombrePlat = nombre;
+                            }else{
+                                if (contt == 2) {
+                                cantT = nc.nextToken();
+                                cantT = cantT.substring(1, cantT.length());
+                                cant = Integer.parseInt(cantT);
+                                this.totalPlat = cant - cantidad;
+                                    if (this.totalPlat<=0) {
+                                        JOptionPane.showMessageDialog(null, "No se pueden realizar mas porciones de este producto" , this.nombrePlat , JOptionPane.INFORMATION_MESSAGE);
+                                        this.platosInc = this.platosInc + ((cant - cantidad) * -1);
+                                        Registro_Mesero.platosNT = this.platosInc;
+                                    }
+                                }else{
+                                    platosT = nc.nextToken();
+                                    platosT = platosT.substring(1, platosT.length());
+                                    platos = Integer.parseInt(platosT);
+                                    this.terminadosPlat = platos + cantidad;
+                                }
+                            }
+                            contt++;
+                        }
+                        modificarLinea(this.nombrePlat, this.totalPlat, this.terminadosPlat, plato);
+                    }else{
+                        modificarLinea(plato, linea);
+
+                    }
+                    
+                }
+            }
+        }catch(FileNotFoundException e){
+        } catch (IOException ex) {
+            Logger.getLogger(Cocina.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        File f = new File(arc); 
+        f.delete();
+    }
+    
+    public void Aprovisionamiento (String producto, int cant){
+        if (producto.equals("Kati Roll")) {
+            JOptionPane.showMessageDialog(null, "2 Cebollas.\n5 Chiles verdes.\n1 Cucharada de sal.\n6 Dientes de ajo.\n1 Pechuga de pollo cortada en tacos.\n"
+            +"2 Cucharadas de aceite vegetal.\n125 gr de harina de trigo.\n100 gr de mantequilla.\n5 Huevos batidos." , "Kati Roll", JOptionPane.INFORMATION_MESSAGE);
+            consumoAlimentos("Kati Roll", cant);
+        }
+        if (producto.equals("Papada de Cerdo")) {
+            JOptionPane.showMessageDialog(null, "500 gr papada de cerdo.\n2 Cucharadas de sal.\n1 Dientes de ajo.\n1 Cebolla.\n3 Tomates.\n"
+            +"2 Cucharadas de aceite vegetal.\n1 Cucharada de pimienta.\n5 Cucharadas de vino tinto seco." , "Papada de cerdo", JOptionPane.INFORMATION_MESSAGE);
+            consumoAlimentos("Papada de Cerdo", cant);
+        }
+        if (producto.equals("Cabracho con Alcachofas")) {
+            JOptionPane.showMessageDialog(null, "1000 gr de cabracho enfiletes.\n2 Dientes de ajo.\n1 Cucharada de sal.\n5 Cucharadas de aceite vegetal.\n"
+            +"8 Alcachofas pequeñas.\n1 Cucharada de pimienta." , "Cabracho con alcachofas", JOptionPane.INFORMATION_MESSAGE);
+            consumoAlimentos("Cabracho con Alcachofas", cant );
+        }
+        if (producto.equals("Solomillo de Cerdo Hojaldrado")) {
+            JOptionPane.showMessageDialog(null, "1 Solomillo grande.\n1 Masa de hojaldre refrigerada.\n3 Huevos.\n4 Tomates.\n"
+            +"1 Cucharadas de sal.\n1 Cucharada de pimienta.\nJamon.\n5 Rebanadas de queso." , "Solomillo de cerdo hojaldrado", JOptionPane.INFORMATION_MESSAGE);
+            consumoAlimentos("Solomillo de Cerdo Hojaldrado", cant);
+        }
+        if (producto.equals("Spaghetti al Ragú")) {
+            JOptionPane.showMessageDialog(null, "400 gr de Spaghetti.\n75 gr de mantequilla.\n5 Cucharadas de aceite vegetal.\n1 Tomate.\n"
+            +"2 Cebollas.\n3 Rebanadas de queso y rayarlos.\n1 Cucharada de pimienta.\n50 gr de harina de trigo." , "Spaghetti al Ragú", JOptionPane.INFORMATION_MESSAGE);
+            consumoAlimentos("Spaghetti al Ragu", cant);
+        }
+        if (producto.equals("Coca Cola")) {
+            JOptionPane.showMessageDialog(null, "Coca Cola personal." , "Bebida", JOptionPane.INFORMATION_MESSAGE);
+            consumoAlimentos("Coca Cola", cant);
+        }
+        if (producto.equals("Gaseosa")) {
+            JOptionPane.showMessageDialog(null, "Gaseosa personal." , "Bebida", JOptionPane.INFORMATION_MESSAGE);
+            consumoAlimentos("Gaseosa", cant);
+        }
+        if (producto.equals("Jugos Naturales")) {
+            JOptionPane.showMessageDialog(null, "1000 gr de fruta.\nAgua.\nAzucar al gusto.\nHielo." , "Jugo Natural", JOptionPane.INFORMATION_MESSAGE);
+            consumoAlimentos("Jugos Naturales", cant);
+        }
+        if (producto.equals("Manzana Templada")) {
+            JOptionPane.showMessageDialog(null, "4 Manzanas.\n100 gr de mantequilla.\n2 Huevos.\n150 gr de harina de trigo.\n"
+            +"5 Cucharas de azucar." , "Manzana Templada", JOptionPane.INFORMATION_MESSAGE);
+            consumoAlimentos("Manzana Templada", cant);
+        }
+        if (producto.equals("Tiramisú Crujiente")) {
+            JOptionPane.showMessageDialog(null, "80 gr de chocolate.\n100 gr de mantequilla.\n5 Huevos.\n"
+            +"6 Cucharas de azucar.\n60 gr de harina. " , "Tiramisú Crujiente", JOptionPane.INFORMATION_MESSAGE);
+            consumoAlimentos("Tiramisu Crujiente", cant);
+        }
+        if (producto.equals("Exótico")) {
+            JOptionPane.showMessageDialog(null, "100 gr de mantequilla.\n5 Huevos.\n"
+            +"7 Cucharas de azucar.\n100 gr de harina. " , "Exótico", JOptionPane.INFORMATION_MESSAGE);
+            consumoAlimentos("Exotico", cant);
+        }
+        if (producto.equals("Minitarta Selva Negra")) {
+            JOptionPane.showMessageDialog(null, "30 gr de mantequilla.\n5 Huevos.\n"
+            +"7 Cucharas de azucar.\n70 gr de harina.\n3 Cerezas.\nChocolate rayado. " , "Minitarta Selva Negra", JOptionPane.INFORMATION_MESSAGE);
+            consumoAlimentos("Minitarta Selva Negra", cant);
+        }
+        
+    }
+    
+ 
+    
     
     /**
      * @param args the command line arguments

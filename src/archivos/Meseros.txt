@@ -1,6 +1,6 @@
 Nombre_Apellido, Número de cédula.
 Mesero #1
-Camilo Delgado, 1234567890
+Juan Almeida, 1
 A cargo de las mesas: 
 	Mesa #1
 	Mesa #2
@@ -8,7 +8,7 @@ A cargo de las mesas:
 	Mesa #4
 	Mesa #5
 Mesero #2
-Jorge Espitia, 987654321
+Kebin Ramirez, 2
 A cargo de las mesas: 
 	Mesa #6
 	Mesa #7
@@ -16,7 +16,7 @@ A cargo de las mesas:
 	Mesa #9
 	Mesa #10
 Mesero #3
-Miguel Lombardi, 1234509876
+Miguel Lombardi, 3
 A cargo de las mesas: 
 	Mesa #11
 	Mesa #12
@@ -24,7 +24,7 @@ A cargo de las mesas:
 	Mesa #14
 	Mesa #15
 Mesero #4
-Mauricio Maldonado, 987612345
+Camilo Delgado, 4
 A cargo de las mesas: 
 	Mesa #16
 	Mesa #17

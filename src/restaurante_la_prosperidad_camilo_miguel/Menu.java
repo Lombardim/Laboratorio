@@ -2,17 +2,17 @@ package restaurante_la_prosperidad_camilo_miguel;
 
 import java.util.*;
 
-public class Menú extends javax.swing.JFrame {
+public class Menu extends javax.swing.JFrame {
 
     /**
-     * Creates new form Menú
+     * Creates new form Menu
      */
     Calendar hora = new GregorianCalendar();
     Cocina pedido = new Cocina();
     public String nombreMesero, nombreCliente;
     public int cont=0, idMesa, cedulaCliente;
     
-    public Menú() {
+    public Menu() {
         initComponents();
     }
     
@@ -209,6 +209,7 @@ public class Menú extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("MENÚ");
         setMinimumSize(new java.awt.Dimension(640, 400));
         setPreferredSize(new java.awt.Dimension(640, 400));
@@ -628,7 +629,7 @@ public class Menú extends javax.swing.JFrame {
         PAPA.setBackground(new java.awt.Color(255, 255, 255));
         PAPA.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         getContentPane().add(PAPA);
-        PAPA.setBounds(10, 320, 370, 20);
+        PAPA.setBounds(10, 340, 370, 20);
 
         CALCULAR.setText("CALCULAR");
         CALCULAR.addActionListener(new java.awt.event.ActionListener() {
@@ -704,7 +705,7 @@ public class Menú extends javax.swing.JFrame {
     private void CALCULARActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CALCULARActionPerformed
         pt =  (((int)PC1.getValue()* 30700) + ((int)PC2.getValue()* 37000) + ((int)PC4.getValue()* 35800) + ((int)PC3.getValue()*40000)+((int)PC5.getValue()*28000) + ((int)CCC.getValue() * 2000) + ((int)GC.getValue() * 1900) + ((int)JNC.getValue() * 1800)) + (((int)MTC.getValue()*8300) + ((int)TCC.getValue() * 11800) + ((int)EC.getValue()*9700) + ((int)MSNC.getValue())*16200);
         if(pt != 0){
-            PAPA.setText("Precio a pagar: " + Integer.toString(pt) + ",00$");
+            PAPA.setText("Precio a pagar sin IVA: " + Integer.toString(pt) + ",00$");
             PedidoButton.setVisible(true);
             PedidoButton.setEnabled(true);
             CANCELAR.setText("CAMBIAR PEDIDO");
@@ -985,13 +986,13 @@ public class Menú extends javax.swing.JFrame {
     }//GEN-LAST:event_MSNNActionPerformed
 
     private void CANCELARActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CANCELARActionPerformed
-        Menú menu = new Menú();
+        Menu menu = new Menu();
         menu.idMesa = idMesa;
         menu.nombreMesero = nombreMesero;
         menu.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_CANCELARActionPerformed
-    //se crea una jframe interno en el cuan contiene la factura con los pedidos que realizo y un joption para mostrar que ya pago.
+    //se crea una jframe interno en el cuan contiene la factura con los pedidos que realizo y un joption para mostrar que ya pago.    //se crea una jframe interno en el cuan contiene la factura con los pedidos que realizo y un joption para mostrar que ya pago.
     
     /**
      * @param args the command line arguments
@@ -1011,20 +1012,21 @@ public class Menú extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Menú.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Menú.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Menú.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Menú.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Menú().setVisible(true);
+                new Menu().setVisible(true);
             }
         });
     }

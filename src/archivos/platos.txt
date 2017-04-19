@@ -1,0 +1,12 @@
+Kati Roll, 50, 0
+Papada de Cerdo, 50, 0
+Cabracho con Alcachofas, 50, 0
+Solomillo de Cerdo Hojaldrado, 50, 0
+Spaghetti al Ragu, 50, 0
+Coca Cola, 50, 0
+Gaseosa, 50, 0
+Jugos Naturales, 50, 0
+Manzana Templada, 50, 0
+Tiramisu Crujiente, 50, 0
+Exotico, 50, 0
+Minitarta Selva Negra, 50, 0

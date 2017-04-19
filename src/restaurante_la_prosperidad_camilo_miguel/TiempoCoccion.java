@@ -155,6 +155,8 @@ public class TiempoCoccion extends javax.swing.JFrame {
                 .addGap(19, 19, 19))
         );
 
+        setResizable(false);
+
         jPanel1.setBackground(java.awt.Color.lightGray);
         jPanel1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -233,7 +235,7 @@ public class TiempoCoccion extends javax.swing.JFrame {
         int R = JOptionPane.showConfirmDialog(null, "¿Desea cambiar el pedido?\nSe le mostrará nuevamente el menú si elige [ SI ]", "CANCELAR PEDIDO", YES_NO_CANCEL_OPTION);
         if (R == 0) {
             crono.stop();
-            Menú menu = new Menú();
+            Menu menu = new Menu();
             menu.idMesa = NumMesa;
             menu.nombreMesero = NomMesero;
             archivo.delete();
